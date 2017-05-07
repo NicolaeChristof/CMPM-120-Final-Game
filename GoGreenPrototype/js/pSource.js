@@ -14,11 +14,30 @@ function PowerSource (game, key, xPos, yPos, power, timer, install, repair, amou
         {
           console.log("Button Pressed");
           //take away money and add energy sources
-          if(money >= 100)
+          if(money >= install)
           {
             this.num++;
-            money -= 100;
+            money -= install;
             moneyText.text = 'Money: ' + money;
+
+            //update number of sources when necessary
+            if(key == 'wind')
+            {
+            	windText.text = 'Wind Sources: ' + wind.num;
+            }
+            else if(key == 'nuclear')
+            {
+            	nuclearText.text = 'Nuclear Sources: ' + nuclear.num;
+            }
+        	else if(key == 'solar')
+        	{
+        		solarText.text = 'Solar Sources: ' + solar.num;
+        	}
+        	else if(key == 'coal')
+        	{
+        		coalText.text = 'Coal Sources: ' + coal.num;
+        	}
+        	
           }
           
         }
