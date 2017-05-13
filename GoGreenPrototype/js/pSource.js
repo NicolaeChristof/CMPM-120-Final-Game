@@ -1,3 +1,10 @@
+/*
+pSource.js
+Powersource prefab for the buttons
+*/
+
+
+
 //game, key, xposition, yposition, power generated, maintenance timer, install cost, repair cost, starting amount of factories
 function PowerSource (game, key, xPos, yPos, power, timer, install, repair, amount)
 {
