@@ -5,15 +5,11 @@ Powersource prefab for the buttons
 
 
 var iconTemp;
-//var windTemp;
 var windExist = false;
-//var solarTemp;
 var solarExist = false;
-//var hydroTemp;
 var hydroExist = false;
-//var coalTemp;
 var coalExist = false;
-//var nuclearTemp;
+var oilExist = false;
 var nuclearExist = false;
 var sellExist = false;
 //game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost, starting amount of factories
@@ -61,6 +57,13 @@ function PowerSource (game, key, xPos, yPos, power, money, timer, install, repai
             setFalse(iconTemp);
             coalExist = true;
             iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'coal');
+            iconTemp.anchor.set(.5);
+        }
+        else if(key == 'oil' && !(oilExist))
+        {
+            setFalse(iconTemp);
+            oilExist = true;
+            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'oil');
             iconTemp.anchor.set(.5);
         }
         else if(key == 'hydro' && !(hydroExist))
@@ -111,7 +114,13 @@ function PowerSource (game, key, xPos, yPos, power, money, timer, install, repai
         nuclearExist = false;
         iconTemp.kill();
       }
-
+      
+      if(oilExist)
+      {
+        oilExist = false;
+        iconTemp.kill();
+      }
+      
       if(sellExist)
       {
         sellExist = false;

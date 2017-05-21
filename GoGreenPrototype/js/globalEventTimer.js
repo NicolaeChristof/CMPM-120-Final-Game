@@ -9,29 +9,29 @@ function startGlobalEvents() {
     globalTimer.start();
 }
 
+
 function globalEvents() {
 	
 	
     income = (wind.num * wind.money) + (nuclear.num * nuclear.money) +
-    (solar.num * solar.money) + (coal.num * coal.money) + (hydro.num * hydro.money);
+    (solar.num * solar.money) + (coal.num * coal.money) + (oil.num * oil.money) + (hydro.num * hydro.money);
     income = income * 2;
     incomeText.text = '+' + income;
     money += income;
+    pollution -= 1;
+
 }
+
+//broken timer code
 
 function buildingTimer(building)
 {
-  seconds = 2;
-  timer = game.time.create(false);
-  timer.add(Phaser.Timer.SECOND, decrement(seconds, building),this);
 
+  //game.time.events.add(Phaser.Timer.SECOND * 4, decrement(building), this);
 }
 
-function decrement(seconds, building)
+function decrement(building)
 {
-	seconds--;
-	if(seconds == 0)
-	{
+      console.log("timer");
       building.kill();
-	}
 }

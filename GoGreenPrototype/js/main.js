@@ -12,6 +12,7 @@ Preloader.prototype = {
         game.load.image('nuclear', 'assets/UpNuclear.png');
         game.load.image('solar', 'assets/UpSolar.png');
         game.load.image('coal', 'assets/UpCoal.png');
+        game.load.image('oil', 'assets/UpCoal.png');
         game.load.image('hydro', 'assets/UpHydro.png');
         //game.load.image('city', 'assets/city2.png');
         game.load.image('co2' , 'assets/co2.png');
@@ -19,7 +20,9 @@ Preloader.prototype = {
         game.load.image('controlpanel' , 'assets/UI.png');
         game.load.image('start', 'assets/Start.png');
         game.load.image('sell', 'assets/Sell.png');
-        
+        game.load.image('mountain', 'assets/Mountain.png');
+        game.load.image('water', 'assets/Water.png');
+
         game.load.spritesheet('city', 'assets/city3.png', 582, 532);
 
         game.load.audio('bgm', ['assets/music/bgm.ogg','assets/music/bgm.mp3' ]);
@@ -55,7 +58,6 @@ MainMenu.prototype = {
             game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
             game.input.onDown.add(gofull, this);
             function gofull() {
-                //sfxPlay('scream', 1);
                 game.state.start('Game');
                 game.scale.startFullScreen(false);
             }
@@ -67,12 +69,13 @@ MainMenu.prototype = {
 var numSources = 0; //number of sources
 var income = 0;  //player's income
 var incomeText;
-var money = 5000; //player's money
+var money = 10000; //player's money
 var co2;
 var pollution = .01;
 var death = false;
 var solarCost;
 var coalCost;
+var oilCost;
 var windCost;
 var hydroCost;
 var nuclearCost;
@@ -108,7 +111,22 @@ Game.prototype = {
         {
             for(var y = 0; y < 500; y+=100)
             {
-                button = new Tile(game, 'grass', x , y, false, 'none', null);
+                var key;
+                var i = game.rnd.integerInRange(1,10);
+                if(i <= 5)
+                {
+                    key = 'grass';
+                }
+                else if((i > 5) && (i <= 8))
+                {
+                    key = 'mountain';
+                }
+                else
+                {
+                    key = 'water';
+                }
+
+                button = new Tile(game, key, x , y, false, 'none', null);
             }
         }
         
@@ -116,22 +134,25 @@ Game.prototype = {
         //game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost, starting amount of factories, pollution
         solarCost = 2000;
         solar =     new PowerSource( game ,'solar', 50, 550, 2, 10, 2, solarCost, 4, 0, 0);
-        coalCost = 1000;
+        coalCost = 1500;
         coal =      new PowerSource( game ,'coal', 150, 550, 10, 30, 2, coalCost, 4, 0, 10);
-        windCost = 1500;
+        windCost = 3000;
         wind =      new PowerSource( game ,'wind', 250, 550, 30, 90, 2, windCost, 4, 0, 0);
+        oilCost = 4000;
+        oil =      new PowerSource( game ,'oil', 350, 550, 35, 120, 2, oilCost, 4, 0, 20);
         hydroCost = 5000;
-        hydro =      new PowerSource( game ,'hydro', 350, 550, 70, 140, 2, hydroCost, 4, 0, 0);
-        nuclearCost = 3000;
-        nuclear =   new PowerSource( game ,'nuclear', 450, 550, 120, 240, 2, nuclearCost, 4, 0, 10);
-        sell = new PowerSource( game ,'sell', 50, 650);
+        hydro =      new PowerSource( game ,'hydro', 450, 550, 70, 140, 2, hydroCost, 4, 0, 0);
+        nuclearCost = 6000;
+        nuclear =   new PowerSource( game ,'nuclear', 50, 650, 60, 240, 2, nuclearCost, 4, 0, 10);
+        sell = new PowerSource( game ,'sell', 150, 650);
         
 
         windText = game.add.text(16 , 75, 'Wind Sources: ' + wind.num , { fontSize: '20px', fill: '#FFF' });
         nuclearText = game.add.text(16 , 100, 'Nuclear Sources: ' + nuclear.num , { fontSize: '20px', fill: '#FFF' });
         solarText = game.add.text(16 , 125, 'Solar Sources: ' + solar.num , { fontSize: '20px', fill: '#FFF' });
         coalText = game.add.text(16 , 150, 'Coal Sources: ' + coal.num , { fontSize: '20px', fill: '#FFF' });
-        hydroText = game.add.text(16 , 175, 'Hydro Sources: ' + hydro.num , { fontSize: '20px', fill: '#FFF' });
+        oilText = game.add.text(16 , 175, 'Oil Sources: ' + coal.num , { fontSize: '20px', fill: '#FFF' });
+        hydroText = game.add.text(16 , 200, 'Hydro Sources: ' + hydro.num , { fontSize: '20px', fill: '#FFF' });
         moneyText = game.add.text(520, 10, 'Money: ' + money, { fontSize: '32px', fill: '#FFF' });
         incomeText = game.add.text(520, 100, '', { fontSize: '32px', fill: '#00FF00' });
         powerText = game.add.text(520, 45, 'Power Generated: 0' , { fontSize: '20px', fill: '#FFF' });
@@ -155,12 +176,17 @@ Game.prototype = {
 
        
         voltage = (wind.num * wind.power) + (nuclear.num * nuclear.power) +
-        (solar.num * solar.power) + (coal.num * coal.power) + (hydro.num * hydro.power);
+        (solar.num * solar.power) + (coal.num * coal.power) + (oil.num * oil.power) + (hydro.num * hydro.power);
         
 
         powerText.text = 'Power Generated: ' + voltage + ' Volts';
+ 
+        pollution = ((coal.num * .01) + (oil.num * .02));
 
-        pollution = coal.num * .01;
+        if(co2.y > -400)
+        {
+            pollution -= .005;
+        }
         //update money
         moneyText.text = 'Money: ' + money;
         if(co2.y < 200)
@@ -178,7 +204,7 @@ Game.prototype = {
         }
 
         //if an icon is clicked set the position to the mouse
-        if(windExist || coalExist || hydroExist || nuclearExist || solarExist || sellExist)
+        if(windExist || coalExist || hydroExist || nuclearExist || solarExist || sellExist || oilExist)
         {
             iconTemp.x = game.input.mousePointer.x;
             iconTemp.y = game.input.mousePointer.y;
