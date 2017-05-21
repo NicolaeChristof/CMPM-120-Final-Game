@@ -2,9 +2,6 @@
 // audioControl.js
 // - BGM manager/player
 //==================================================================//
-
-function audioControl() {
-
     function bgmPlay(key, vol) {
         bgmCurrent = game.add.audio(key);
         bgmCurrent.volume = vol;
@@ -23,10 +20,3 @@ function audioControl() {
         sfxCurrent.play();
     }
 
-}
-
-audioControl.prototype = Object.create(Phaser.Sprite.prototype);
-audioControl.prototype.constructor = audioControl;
-audioControl.prototype.update = function(){
-    
-}

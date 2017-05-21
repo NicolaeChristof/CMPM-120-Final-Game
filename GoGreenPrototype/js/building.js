@@ -1,0 +1,4 @@
+/*
+building.js
+building prefab for the factories
+*/

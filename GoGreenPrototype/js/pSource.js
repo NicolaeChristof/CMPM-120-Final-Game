@@ -15,8 +15,9 @@ var hydroExist = false;
 var coalExist = false;
 //var nuclearTemp;
 var nuclearExist = false;
-//game, key, xposition, yposition, power generated, maintenance timer, install cost, repair cost, starting amount of factories
-function PowerSource (game, key, xPos, yPos, power, timer, install, repair, amount, pollution)
+var sellExist = false;
+//game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost, starting amount of factories
+function PowerSource (game, key, xPos, yPos, power, money, timer, install, repair, amount, pollution)
 {
     this.num = amount;
     //passing x and y pos and the key
@@ -25,6 +26,7 @@ function PowerSource (game, key, xPos, yPos, power, timer, install, repair, amou
     button.anchor.setTo(.5);
     this.anchor.set(.5);
     this.power = power;
+    this.money = money;
     
     //when button is pressed
     function actionOnClick()
@@ -68,6 +70,13 @@ function PowerSource (game, key, xPos, yPos, power, timer, install, repair, amou
             iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'hydro');
             iconTemp.anchor.set(.5);
         }
+        else if(key == 'sell' && !sellExist)
+        {
+            setFalse(iconTemp);
+            sellExist = true;
+            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'sell');
+            iconTemp.anchor.set(.5);
+        }
             
     }
 
@@ -102,7 +111,14 @@ function PowerSource (game, key, xPos, yPos, power, timer, install, repair, amou
         nuclearExist = false;
         iconTemp.kill();
       }
+
+      if(sellExist)
+      {
+        sellExist = false;
+        iconTemp.kill();
+      }
     }
+   
           
 }
 
