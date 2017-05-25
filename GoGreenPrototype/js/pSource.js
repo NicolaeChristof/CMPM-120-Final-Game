@@ -12,17 +12,16 @@ var coalExist = false;
 var oilExist = false;
 var nuclearExist = false;
 var sellExist = false;
-//game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost, starting amount of factories
-function PowerSource (game, key, xPos, yPos, power, money, timer, install, repair, amount, pollution)
+var repairExist = false;
+//game, key, xposition, yposition
+function PowerSource (game, key, xPos, yPos)
 {
-    this.num = amount;
+    
     //passing x and y pos and the key
-    Phaser.Sprite.call(this, game, xPos, yPos, key);
+    //Phaser.Sprite.call(this, game, xPos, yPos, key);
     button = game.add.button(xPos , yPos, key, actionOnClick, this);
     button.anchor.setTo(.5);
-    this.anchor.set(.5);
-    this.power = power;
-    this.money = money;
+    //this.anchor.set(.5);
     
     //when button is pressed
     function actionOnClick()
@@ -35,7 +34,7 @@ function PowerSource (game, key, xPos, yPos, power, money, timer, install, repai
         {
             setFalse(iconTemp);
             windExist = true;
-            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'wind');
+            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'windBuilding');
             iconTemp.anchor.set(.5);
         }
         else if(key == 'nuclear' && !(nuclearExist))
@@ -56,7 +55,7 @@ function PowerSource (game, key, xPos, yPos, power, money, timer, install, repai
         {
             setFalse(iconTemp);
             coalExist = true;
-            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'coal');
+            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'coalBuilding');
             iconTemp.anchor.set(.5);
         }
         else if(key == 'oil' && !(oilExist))
@@ -77,7 +76,14 @@ function PowerSource (game, key, xPos, yPos, power, money, timer, install, repai
         {
             setFalse(iconTemp);
             sellExist = true;
-            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'sell');
+            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'sell2');
+            iconTemp.anchor.set(.5);
+        }
+        else if(key == 'repair' && !repairExist)
+        { 
+            setFalse(iconTemp);
+            repairExist = true;
+            iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'repair2');
             iconTemp.anchor.set(.5);
         }
             
@@ -126,6 +132,13 @@ function PowerSource (game, key, xPos, yPos, power, money, timer, install, repai
         sellExist = false;
         iconTemp.kill();
       }
+
+      if(repairExist)
+      {
+        repairExist = false;
+        iconTemp.kill();
+      }
+    
     }
    
           

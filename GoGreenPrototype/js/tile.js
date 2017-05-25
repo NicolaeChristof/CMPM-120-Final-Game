@@ -6,8 +6,8 @@ Tile prefab for the tiles
 
 var mountainValid = false;
 var waterValid = false;
-//game, key, xposition, yposition, occupied, name of object, reference to building
-function Tile (game, key, xPos, yPos, occupied, name, building)
+//game, key of the tile, xposition, yposition, occupied, key of the building, reference to building, index of the tile
+function Tile (game, key, xPos, yPos, name, building, tileIndex)
 {
 	
 	//passing x and y pos and the key
@@ -19,170 +19,237 @@ function Tile (game, key, xPos, yPos, occupied, name, building)
     bfx04 = game.add.audio('sell');
 
 
+
     //when button is pressed
         function actionOnClick()
         {
           console.log("Tile Pressed");
+          console.log("Tile index: " + tileIndex);
           //check what powersource is being placed and whether the space is occupied
-          if(windExist && (money >= windCost) && (!occupied))
+          if(windExist && (money >= windCost) && !(isOccupied[tileIndex]))
           {
           	windExist = false;
             //subtract the cost to install from money
           	money -= windCost;
           	moneyText.text = 'Money: ' + money;
-            //update the number of sources
-          	wind.num++;
-          	windText.text = 'Wind Sources: ' + wind.num;
+
             //spawn an icon in the center of the tile
-          	iconTemp.x = xPos+50;
-          	iconTemp.y = yPos+50;
+            iconTemp.kill();
+            buildingTemp = new Building(game, 'windBuilding', xPos, yPos, 30, 90, 4, 2000, 4, 0, tileIndex);
+            
+            
             //play select sound
           	bfx01.play();
-          	occupied = true;
+          	isOccupied[tileIndex] = true;
             name = 'wind';
             //create a reference to the building
-            building = iconTemp;
+            building = buildingTemp;
 
             if(key == 'mountain')
             {
-               iconTemp.power = iconTemp.power/2;
+               building.power = building.power/2;
+               building.money = building.money/2;
             }
+
+            power[tileIndex] = buildingTemp.power;
+            income[tileIndex] = buildingTemp.money;
+            totalPollution[tileIndex] = buildingTemp.pollution;
             buildingTimer(building);
+            buildingPlaced = true;
           }
-          else if(coalExist && money >= coalCost && (!occupied) && (key != 'water'))
+          else if(coalExist && money >= coalCost && (!isOccupied[tileIndex]) && (key != 'water'))
           {
           	coalExist = false;
           	money -= coalCost;
           	moneyText.text = 'Money: ' + money;
-          	coal.num++;
-            coalText.text = 'Coal Sources: ' + coal.num;
-          	iconTemp.x = xPos+50;
-          	iconTemp.y = yPos+50; 
+
+            iconTemp.kill();
+            buildingTemp = new Building(game, 'coalBuilding', xPos, yPos, 10, 30, 4, 1500, 4, 10, tileIndex);
+
           	bfx01.play();
-          	occupied = true;
+          	isOccupied[tileIndex] = true;
             name = 'coal';
-            building = iconTemp;
+            building = buildingTemp;
+
+            power[tileIndex] = buildingTemp.power;
+            income[tileIndex] = buildingTemp.money;
+            totalPollution[tileIndex] = buildingTemp.pollution;
             buildingTimer(building);
+            buildingPlaced = true;
           }
-          else if(oilExist && money >= oilCost && (!occupied) && (key != 'mountain'))
+          else if(oilExist && money >= oilCost && (!isOccupied[tileIndex]) && (key != 'mountain'))
           {
             oilExist = false;
             money -= oilCost;
             moneyText.text = 'Money: ' + money;
-            oil.num++;
-            oilText.text = 'Oil Sources: ' + coal.num;
-            iconTemp.x = xPos+50;
-            iconTemp.y = yPos+50; 
+            iconTemp.kill();
+            buildingTemp =     new Building( game ,'oil', xPos, yPos, 35, 120, 4, 4000, 4, 20, tileIndex);
+
             bfx01.play();
-            occupied = true;
+            isOccupied[tileIndex] = true;
             name = 'oil';
-            building = iconTemp;
+            building = buildingTemp;
+
+            power[tileIndex] = buildingTemp.power;
+            income[tileIndex] = buildingTemp.money;
+            totalPollution[tileIndex] = buildingTemp.pollution;
             buildingTimer(building);
+            buildingPlaced = true;
           }
           //Hydro can only be placed on water
-          else if(hydroExist && money >= hydroCost && (!occupied) && (key == 'water'))
+          else if(hydroExist && money >= hydroCost && (!isOccupied[tileIndex]) && (key == 'water'))
           {
           	hydroExist = false;
           	money -= hydroCost;
           	moneyText.text = 'Money: ' + money;
-          	hydro.num++;
-          	hydroText.text = 'Hydro Sources: ' + hydro.num;
-          	iconTemp.x = xPos+50;
-          	iconTemp.y = yPos+50; 
+            iconTemp.kill();
+            buildingTemp =     new Building( game ,'hydro', xPos, yPos, 70, 140, 4, 5000, 4, 0, tileIndex);
+
           	bfx01.play();
-          	occupied = true;
+          	isOccupied[tileIndex] = true;
             name = 'hydro';
-            building = iconTemp;
+
+            building = buildingTemp;
+        
+            power[tileIndex] = buildingTemp.power;
+            income[tileIndex] = buildingTemp.money;
+            totalPollution[tileIndex] = buildingTemp.pollution;
             buildingTimer(building);
+            buildingPlaced = true;
           }
-          else if(solarExist && money >= solarCost && (!occupied) && (key != 'water'))
+          else if(solarExist && money >= solarCost && (!isOccupied[tileIndex]) && (key != 'water'))
           {
           	solarExist = false;
           	money -= solarCost;
           	moneyText.text = 'Money: ' + money;
-          	solar.num++;
-          	solarText.text = 'Solar Sources: ' + solar.num;
-          	iconTemp.x = xPos+50;
-          	iconTemp.y = yPos+50; 
+
+            iconTemp.kill();
+            buildingTemp = new Building( game ,'solar', xPos, yPos, 2, 10, 4, 2000, 4, 0, tileIndex);
+
           	bfx01.play();
-          	occupied = true;
+          	isOccupied[tileIndex] = true;
             name = 'solar';
-            building = iconTemp;
+            
+            building = buildingTemp;
+
+            power[tileIndex] = buildingTemp.power;
+            income[tileIndex] = buildingTemp.money;
+            totalPollution[tileIndex] = buildingTemp.pollution;
             buildingTimer(building);
+            buildingPlaced = true;
           }
-          else if(nuclearExist && money >= nuclearCost && (!occupied) && (key == 'grass'))
+          else if(nuclearExist && money >= nuclearCost && (!isOccupied[tileIndex]) && (key == 'grass'))
           {
           	nuclearExist = false;
-
+            
           	money -= nuclearCost;
           	moneyText.text = 'Money: ' + money;
-          	nuclear.num++;
-          	nuclearText.text = 'Nuclear Sources: ' + nuclear.num;
-          	iconTemp.x = xPos+50;
-          	iconTemp.y = yPos+50; 
+
+            iconTemp.kill();
+            buildingTemp = new Building(game ,'nuclear', xPos, yPos, 60, 240, 4, 6000, 4, 0, tileIndex);
+   
           	bfx01.play();
-          	occupied = true;
+          	isOccupied[tileIndex] = true;
             name = 'nuclear';
-            building = iconTemp;
+            building = buildingTemp;
+
+            power[tileIndex] = buildingTemp.power;
+            income[tileIndex] = buildingTemp.money;
+            totalPollution[tileIndex] = buildingTemp.pollution;
             buildingTimer(building);
+            buildingPlaced = true;
           }
           //selling
-          else if(sellExist && occupied)
+          else if(sellExist && isOccupied[tileIndex])
           {
              if(name == 'wind')
              {
-               wind.num--;
-               windText.text = 'Wind Sources: ' + wind.num;
-               occupied = false;
+               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               isOccupied[tileIndex] = false;
                bfx04.play();
+
+               money += building.install/2;
+               moneyText.text = 'Money: ' + money;
+
+               building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'solar')
              {
-               solar.num--;
-               solarText.text = 'Solar Sources: ' + solar.num;
-               occupied = false;
+               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               isOccupied[tileIndex] = false;
                bfx04.play();
+
+               money += building.install/2;
+               moneyText.text = 'Money: ' + money;
+
+               building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'coal')
              {
-               coal.num--;
-               coalText.text = 'Coal Sources: ' + coal.num;
-               occupied = false;
+               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               isOccupied[tileIndex] = false;
                bfx04.play();
+
+               money += building.install/2;
+               moneyText.text = 'Money: ' + money;
+
+               building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'oil')
              {
-               oil.num--;
-               oilText.text = 'Oil Sources: ' + oil.num;
-               occupied = false;
+               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               isOccupied[tileIndex] = false;
                bfx04.play();
+
+               money += building.install/2;
+               moneyText.text = 'Money: ' + money;
+
+               building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'hydro')
              {
-               hydro.num--;
-               hydroText.text = 'Hydro Sources: ' + hydro.num;
-               occupied = false;
+               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               isOccupied[tileIndex] = false;
                bfx04.play();
+
+               money += building.install/2;
+               moneyText.text = 'Money: ' + money;
+
+               building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'nuclear')
              {
-               nuclear.num--;
-               nuclearText.text = 'Nuclear Sources: ' + nuclear.num;
-               occupied = false;
+               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               isOccupied[tileIndex] = false;
                bfx04.play();
+
+               money += building.install/2;
+               moneyText.text = 'Money: ' + money;
+
+               building.buildingIcon.destroy();
                building.kill();
+
              }
           }
-          else if(occupied && (windExist || coalExist || hydroExist || nuclearExist || solarExist || oilExist))
+          else if(repairExist && isOccupied[tileIndex])
+          {
+            game.time.events.remove(building.repairTimer);
+            money -= building.repair;
+            moneyText.text = 'Money: ' + money;
+            power[building.index] = building.power;
+            income[building.index] = building.money;
+            buildingTimer(building);
+          }
+          else if(isOccupied[tileIndex] && (windExist || coalExist || hydroExist || nuclearExist || solarExist || oilExist || repairExist))
           {
             bfx03.play();
           }	
-          else if(windExist || coalExist || hydroExist || nuclearExist || solarExist || oilExist)
+          else if(windExist || coalExist || hydroExist || nuclearExist || solarExist || oilExist || repairExist)
           {
           	bfx02.play();
           }

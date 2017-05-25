@@ -11,27 +11,28 @@ function startGlobalEvents() {
 
 
 function globalEvents() {
-	
-	
-    income = (wind.num * wind.money) + (nuclear.num * nuclear.money) +
-    (solar.num * solar.money) + (coal.num * coal.money) + (oil.num * oil.money) + (hydro.num * hydro.money);
-    income = income * 2;
-    incomeText.text = '+' + income;
-    money += income;
+    revenue = 0;
+    for(var i = 0; i < 25; i++)
+    {
+    	revenue += income[i];
+    }
+    
+    incomeText.text = '+' + revenue;
+    money += revenue;
     pollution -= 1;
-
 }
 
 //broken timer code
 
 function buildingTimer(building)
 {
-
-  //game.time.events.add(Phaser.Timer.SECOND * 4, decrement(building), this);
+ building.repairTimer = game.time.events.add(Phaser.Timer.SECOND * building.timer, decay, this, building);
+ console.log(building.repairTimer);
 }
 
-function decrement(building)
+function decay(building)
 {
       console.log("timer");
-      building.kill();
+      console.log(building.index);
+      income[building.index] = power[building.index] = 0;
 }

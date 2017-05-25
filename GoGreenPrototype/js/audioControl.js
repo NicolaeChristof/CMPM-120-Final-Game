@@ -3,10 +3,16 @@
 // - BGM manager/player
 //==================================================================//
     function bgmPlay(key, vol) {
-        bgmCurrent = game.add.audio(key);
-        bgmCurrent.volume = vol;
-        bgmCurrent.loop = true;
-        bgmCurrent.play();
+        if (key != bgmCurrentKey)
+        {
+            bgmCurrentKey = key;
+
+            bgmCurrent = game.add.audio(key);
+            bgmCurrent.volume = vol;
+            bgmCurrent.loop = true;
+            bgmCurrent.play();
+        }
+
     }
     
     function bgmSetVolume(vol) {
