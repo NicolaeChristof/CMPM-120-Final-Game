@@ -107,6 +107,8 @@ var nuclearTimer;
 var repair;
 
 var buildingPlaced = false;
+var bgmPlaying = false;
+var bgm2Playing = false;
 var bgmCurrent;
 var bgmCurrentKey;
 
@@ -126,17 +128,17 @@ Game.prototype = {
         startGlobalEvents();
         bgm = game.add.audio('bgm');
         scream = game.add.audio('scream');
-        
+        bgmPlay('bgm', 1);
 
         
-        bgmPlay('bgm2', 1);
+        
         //add sky
         sky = game.add.sprite(500, 100, 'sky');
         city = game.add.sprite(500, 168, 'city');
         co2 = game.add.sprite(500, -400, 'co2');
         cloud = game.add.sprite(500, 0, 'cloud');
         bUI = game.add.sprite(0, 500, 'controlpanel');
-
+        
         
         //add grid
         var j = 0;
@@ -207,17 +209,20 @@ Game.prototype = {
     
     //increases money based off the number of sources
     update: function() {
+         
 
+         if (buildingPlaced)
+        {
+            if(!bgmPlaying)
+            {
+                bgmPlaying = true;
+                bgmCurrent.stop();
+                bgmPlay('bgm2', 1);
 
-        //update text: Should be in the prefab once all the icons are finished
-        //compare by keys and then update when necessary
-        /*
-        windText.text = 'Wind Sources: ' + wind.num;
-        nuclearText.text = 'Nuclear Sources: ' + nuclear.num;
-        solarText.text = 'Solar Sources: ' + solar.num;
-        coalText.text = 'Coal Sources: ' + coal.num;
-        */
-        //increase income by the amounts
+            }
+           
+        }
+
         var temp = 0;
         pollution = 0;
         for(var i = 0; i < 25; i++)
@@ -229,14 +234,11 @@ Game.prototype = {
         pollution = pollution * .001;
         voltage = temp;
         
-
-        powerText.text = 'Power Generated: ' + voltage + ' Volts';
- 
+        powerText.text = 'Power Generated: ' + voltage + ' Volts';  
         
-        
-        if(co2.y > -400)
+        if(co2.y >= -400)
         {
-            pollution -= .005;
+            pollution += .005;
         }
         //update money
         moneyText.text = 'Money: ' + money;

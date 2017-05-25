@@ -164,73 +164,79 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
           {
              if(name == 'wind')
              {
-               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               power[tileIndex] = income[tileIndex] = 0;
                isOccupied[tileIndex] = false;
                bfx04.play();
 
                money += building.install/2;
                moneyText.text = 'Money: ' + money;
-
+               pollutionTimer(building);
+               game.time.events.remove(building.repairTimer);
                building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'solar')
              {
-               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               power[tileIndex] = income[tileIndex] = 0;
                isOccupied[tileIndex] = false;
                bfx04.play();
 
                money += building.install/2;
                moneyText.text = 'Money: ' + money;
-
+               pollutionTimer(building);
+               game.time.events.remove(building.repairTimer);
                building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'coal')
              {
-               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               power[tileIndex] = income[tileIndex] = 0;
                isOccupied[tileIndex] = false;
                bfx04.play();
 
                money += building.install/2;
                moneyText.text = 'Money: ' + money;
-
+               pollutionTimer(building);
+               game.time.events.remove(building.repairTimer);
                building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'oil')
              {
-               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               power[tileIndex] = income[tileIndex] = 0;
                isOccupied[tileIndex] = false;
                bfx04.play();
 
                money += building.install/2;
                moneyText.text = 'Money: ' + money;
-
+               pollutionTimer(building);
+               game.time.events.remove(building.repairTimer);
                building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'hydro')
              {
-               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               power[tileIndex] = income[tileIndex] = 0;
                isOccupied[tileIndex] = false;
                bfx04.play();
 
                money += building.install/2;
                moneyText.text = 'Money: ' + money;
-
+               pollutionTimer(building);
+               game.time.events.remove(building.repairTimer);
                building.buildingIcon.destroy();
                building.kill();
              }
              else if(name == 'nuclear')
              {
-               power[tileIndex] = income[tileIndex] = totalPollution[tileIndex] = 0;
+               power[tileIndex] = income[tileIndex] = 0;
                isOccupied[tileIndex] = false;
                bfx04.play();
 
                money += building.install/2;
                moneyText.text = 'Money: ' + money;
-
+               pollutionTimer(building);
+               game.time.events.remove(building.repairTimer);
                building.buildingIcon.destroy();
                building.kill();
 
