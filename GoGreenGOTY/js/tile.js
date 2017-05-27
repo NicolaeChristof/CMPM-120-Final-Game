@@ -1,12 +1,12 @@
-/*
-Tile.js
-Tile prefab for the tiles
-*/
-
+//==================================================================//
+// Tile.js
+// - Tile prefab for the tiles
+//==================================================================//
 
 var mountainValid = true;
 var waterValid = true;
 var grassValid = true;
+
 //game, key of the tile, xposition, yposition, occupied, key of the building, reference to building, index of the tile
 function Tile (game, key, xPos, yPos, name, building, tileIndex)
 {
@@ -18,8 +18,6 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
     bfx02 = game.add.audio('wrong');
     bfx03 = game.add.audio('occupied');
     bfx04 = game.add.audio('sell');
-
-
 
     //when button is pressed
         function actionOnClick()

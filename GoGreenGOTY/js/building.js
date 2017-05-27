@@ -1,7 +1,8 @@
-/*
-building.js
-building prefab for the factories
-*/
+//==================================================================//
+// building.js
+// - building prefab for the factories
+//==================================================================//
+
 var buildingTemp;
 //game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost
 function Building (game, key, xPos, yPos, power, money, timer, install, repair, pollution, index)
