@@ -6,7 +6,7 @@
 //==================================================================//
 
 var gameScreenProperties = {};
-gameScreenProperties.width = 1000; // Game frame width in pixels
+gameScreenProperties.width = 1100; // Game frame width in pixels
 gameScreenProperties.height = 1000; // Game frame height in pixels
 
 //==================================================================//
@@ -81,24 +81,43 @@ gameStates.Preloader.prototype = {
         
         game.load.image('cloud', 'assets/images/randall.png');
         game.load.image('sky' , 'assets/images/sky.png');
-        game.load.image('wind', 'assets/images/UpWind.png');
-        game.load.image('windBuilding', 'assets/images/windBuilding.png');
-        game.load.image('nuclear', 'assets/images/UpNuclear.png');
-        game.load.image('solar', 'assets/images/UpSolar.png');
-        game.load.image('coal', 'assets/images/UpCoal.png');
-        game.load.image('coalBuilding', 'assets/images/CoalBuilding.png');
-        game.load.image('oil', 'assets/images/UpCoal.png');
-        game.load.image('hydro', 'assets/images/UpHydro.png');
         game.load.image('co2' , 'assets/images/co2.png');
-        game.load.image('grass' , 'assets/images/BField.png');
-        game.load.image('controlpanel' , 'assets/images/UI.png');
+
+        game.load.image('wind', 'assets/images/UpWind.png');
+        game.load.image('windOW', 'assets/images/WindOW.png');
+
+        game.load.image('nuclear', 'assets/images/UpNuclear.png');
+
+        game.load.image('solar', 'assets/images/UpSolar.png');
+
+        game.load.image('coal', 'assets/images/UpCoal.png');
+        game.load.image('coalOW', 'assets/images/CoalOW.png');
+
+        game.load.image('oil', 'assets/images/UpCoal.png');
+        game.load.image('oilOW', 'assets/images/OilOW.png');
+
+        game.load.image('hydro', 'assets/images/UpHydro.png');
+        
+        game.load.image('controlpanel' , 'assets/images/UI2.png');
+
         game.load.image('start', 'assets/images/Start.png');
+
         game.load.image('sell', 'assets/images/Sell.png');
         game.load.image('sell2', 'assets/images/SellCursor.png');
+
         game.load.image('repair', 'assets/images/Repair.png');
         game.load.image('repair2' ,'assets/images/RepairCursor.png');
-        game.load.image('mountain', 'assets/images/Mountain.png');
-        game.load.image('water', 'assets/images/Water.png');
+        
+        game.load.spritesheet('grass', 'assets/images/FieldSS.png', 200, 200);
+        //game.load.image('grass' , 'assets/images/Field.png');
+        //game.load.image('grassHL' , 'assets/images/FieldHL.png');
+        game.load.spritesheet('mountain', 'assets/images/mountainSS.png', 200, 200);
+        //game.load.image('mountain', 'assets/images/Mountain.png');
+        //game.load.image('mountainHL' , 'assets/images/MountainHL.png');
+        game.load.spritesheet('water', 'assets/images/waterSS.png' , 200, 200);
+        //game.load.image('water', 'assets/images/Water.png');
+        //game.load.image('waterHL', 'assets/images/WaterHL.png');
+        game.load.image('city2', 'assets/images/city.png');
         
         //----LOAD SPRITESHEETS----//
 
@@ -182,23 +201,25 @@ gameStates.Play.prototype = {
         startGlobalEvents();
         bgm = game.add.audio('bgm');
         scream = game.add.audio('scream');
-        bgmPlay('bgm', 1);
+        bgmPlay('bgm', .25);
         
         //add sky
         sky = game.add.sprite(500, 100, 'sky');
         sky2 = game.add.sprite(0,100, 'sky');
-        city = game.add.sprite(500, 168, 'city');
-        city2 = game.add.sprite(0, 168, 'city');
+        buildings = game.add.group();
+        city = buildings.create(500, 168, 'city');
+        city2 = buildings.create(0, 168, 'city');
         co2 = game.add.sprite(500, -400, 'co2');
         co2_2 = game.add.sprite(0, -400, 'co2');
         cloud = game.add.sprite(500, 0, 'cloud');
         cloud2 = game.add.sprite(0, 0, 'cloud');
-        //bUI = game.add.sprite(0, 500, 'controlpanel');
+        bUI = game.add.sprite(1000, 0, 'controlpanel');
+        bUI.scale.setTo(.5);
         
         //add grid
         
         var j = 0;
-        for(var x = 0; x < 1000; x+=100)
+        for(var x = 0; x < 800; x+= 100)
         {
             for(var y = 700; y < 1000; y+=100)
             {
@@ -293,7 +314,7 @@ gameStates.Play.prototype = {
         
         if(co2.y >= -400)
         {
-            pollution += .005;
+            pollution += .00001;
         }
         
         //update money
@@ -308,6 +329,7 @@ gameStates.Play.prototype = {
         {
             scream.play();
             death = true;
+            
             //game.state.start('GameOver');
         }
 

@@ -10,6 +10,7 @@ function Building (game, key, xPos, yPos, power, money, timer, install, repair, 
     //passing x and y pos and the key
     Phaser.Sprite.call(this, game, xPos, yPos, key);
     this.buildingIcon = game.add.sprite(xPos, yPos, key);
+    this.buildingIcon.scale.setTo(.5);
     this.power = power;
     this.money = money;
     this.timer = timer;

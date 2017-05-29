@@ -2,23 +2,148 @@
 // Tile.js
 // - Tile prefab for the tiles
 //==================================================================//
-
-var mountainValid = true;
-var waterValid = true;
-var grassValid = true;
-
+var isSelected = false;
+var selectedButton;
 //game, key of the tile, xposition, yposition, occupied, key of the building, reference to building, index of the tile
 function Tile (game, key, xPos, yPos, name, building, tileIndex)
 {
 	
 	//passing x and y pos and the key
 	Phaser.Sprite.call(this, game, xPos, yPos, key);
-    button = game.add.button(xPos , yPos, key, actionOnClick, this);
+    this.button = game.add.button(xPos , yPos, key, actionOnClick, this);
+    this.button.scale.setTo(.5);
     bfx01 = game.add.audio('button');
     bfx02 = game.add.audio('wrong');
     bfx03 = game.add.audio('occupied');
     bfx04 = game.add.audio('sell');
+    
+    function deselect(btn)
+    {
+       btn.frame = 0;
+    }
+    
+    //remove icons
+    function removeIcons()
+    {
+      if(solarExist)
+      {
+        solar.button.kill();
+        solar.kill();
+        solarExist = false;
+      }
 
+      if(windExist)
+      {
+        wind.button.kill();
+        wind.kill();
+        windExist = false;
+      }
+      if(coalExist)
+      { 
+        coal.button.kill();
+        coal.kill();
+        coalExist = false;
+      }
+      if(oilExist)
+      {
+        oil.button.kill();
+        oil.kill();
+        oilExist = false;
+      }
+
+      if(hydroExist)
+      {
+        hydro.button.kill();
+        hydro.kill();
+        hydroExist = false;
+      }
+
+      if(nuclearExist)
+      {
+        nuclear.button.kill();
+        nuclear.kill();
+        nuclearExist = false;
+      }
+      
+
+    }
+    function actionOnClick()
+    {
+      console.log("Tile Pressed");
+      console.log("Tile index: " + tileIndex);
+      
+      if(!isSelected)
+      {
+        if(selectedButton != this.button)
+        {
+          selectedButton = this.button;
+          selectedButton.frame = 1;
+          isSelected = true;
+        }
+      }
+      else
+      {
+        if(selectedButton != this.button)
+        {
+          deselect(selectedButton);
+          isSelected = false;
+        }
+      }
+
+      if(isSelected)
+      {
+        if(key == 'mountain')
+        {
+        removeIcons();
+        solarCost = 2000;
+        solarExist = true;
+        solar =     new PowerSource( game ,'solar', 1050, 50, tileIndex, this);
+        coalCost = 1500;
+        coalExist = true;
+        coal =      new PowerSource( game ,'coal', 1050, 150, tileIndex, this);
+        windCost = 3000;
+        windExist = true;
+        wind =      new PowerSource( game ,'wind', 1050, 250, tileIndex, this);
+      }
+      else if(key == 'water')
+      {
+        removeIcons();
+        windCost = 3000;
+        windExist = true;
+        wind =      new PowerSource( game ,'wind', 1050, 50, tileIndex, this);
+        oilCost = 4000;
+        oilExist = true;
+        oil =      new PowerSource( game ,'oil', 1050, 150, tileIndex, this);
+        hydroCost = 5000;
+        hydroExist = true;
+        hydro =      new PowerSource( game ,'hydro', 1050, 250, tileIndex, this);
+      }
+      else if(key == 'grass')
+      {
+        removeIcons();
+        solarCost = 2000;
+        solarExist = true;
+        solar =     new PowerSource( game ,'solar', 1050, 50, tileIndex, this);
+        coalCost = 1500;
+        coalExist = true;
+        coal =      new PowerSource( game ,'coal', 1050, 150, tileIndex, this);
+        windCost = 3000;
+        windExist = true;
+        wind =      new PowerSource( game ,'wind', 1050, 250, tileIndex, this);
+        oilCost = 4000;
+        oilExist = true;
+        oil =      new PowerSource( game ,'oil', 1050, 350, tileIndex, this);
+        nuclearCost = 6000;
+        nuclearExist = true;
+        nuclear =   new PowerSource( game ,'nuclear', 1050, 450, tileIndex, this);
+      }
+    }
+    else
+    {
+      removeIcons();
+    }
+    }
+    /*
     //when button is pressed
         function actionOnClick()
         {
@@ -261,6 +386,7 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
           }
           	
         }
+        */
 }
 
 Tile.prototype = Object.create(Phaser.Sprite.prototype);

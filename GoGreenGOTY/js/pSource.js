@@ -13,16 +13,75 @@ var nuclearExist = false;
 var sellExist = false;
 var repairExist = false;
 
-//game, key, xposition, yposition
-function PowerSource (game, key, xPos, yPos)
+//game, key, xposition, yposition, index of the tile, reference in the tile
+function PowerSource (game, key, xPos, yPos, index , tile, icon)
 {
     
     //passing x and y pos and the key
     //Phaser.Sprite.call(this, game, xPos, yPos, key);
-    button = game.add.button(xPos , yPos, key, actionOnClick, this);
-    button.anchor.setTo(.5);
-    //this.anchor.set(.5);
+
+    icon = game.add.button(xPos , yPos, key, actionOnClick, this);
+    icon.anchor.setTo(.5);
+    icon.scale.setTo(.5);
+    this.button = icon;
     
+
+    function actionOnClick()
+    {
+        console.log("Button Pressed");
+        if(isSelected)
+        {
+            if(isOccupied[index] == false)
+                {
+        //update number of sources when necessary
+        switch(key) {
+            case 'wind':
+
+                     buildingTemp = new Building(game, 'windOW', tile.x, tile.y, 30, 90, 4, 2000, 4, 0, index);
+                    tile.building = buildingTemp;
+                    tile.name = 'wind';
+                    if(tile.key == 'mountain')
+                    {
+                        tile.building.power /= 2;
+                    }
+                    console.log(tile.building.power);
+                    isOccupied[index] = true;
+                break;
+            case 'nuclear':
+                buildingTemp = new Building(game, 'nuclear', tile.x, tile.y, 30, 90, 4, 2000, 4, 0, index);
+                isOccupied[index] = true;
+                break;
+            case 'solar':
+                buildingTemp = new Building(game, 'solar', tile.x, tile.y, 30, 90, 4, 2000, 4, 0, index);
+                isOccupied[index] = true;
+                break;
+            case 'coal':
+                buildingTemp = new Building(game, 'coalOW', tile.x, tile.y, 30, 90, 4, 2000, 4, 0, index);
+                isOccupied[index] = true;
+                break;
+            case 'oil':
+                buildingTemp = new Building(game, 'oilOW', tile.x, tile.y, 30, 90, 4, 2000, 4, 0, index);
+                isOccupied[index] = true;
+                break;
+            case 'hydro':
+                buildingTemp = new Building(game, 'hydro', tile.x, tile.y, 30, 90, 4, 2000, 4, 0, index);
+                isOccupied[index] = true;
+                break;
+            case 'sell':
+                
+                break;
+            case 'repair':
+                
+                break;
+            }
+            }
+        }
+    }
+
+
+
+    
+    /*
     //when button is pressed
     function actionOnClick()
     {
@@ -134,9 +193,10 @@ function PowerSource (game, key, xPos, yPos)
             repairExist = true;
             iconTemp = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y,'repair2');
             iconTemp.anchor.set(.5);
-        }*/
+        }
             
     }
+    */
 
     function setFalse(sprite)
     {
