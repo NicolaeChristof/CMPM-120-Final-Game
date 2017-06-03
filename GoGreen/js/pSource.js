@@ -20,12 +20,13 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
     //passing x and y pos and the key
     //Phaser.Sprite.call(this, game, xPos, yPos, key);
 
-    icon = game.add.button(xPos , yPos, key, actionOnClick, this);
+    icon = game.add.button(xPos, yPos, key, actionOnClick, this);
     icon.anchor.setTo(.5);
-    icon.scale.setTo(.3);
+    icon.scale.setTo(.5);
     this.button = icon;
     
-
+    // ToDo: MAKE BUTTON SPRITES FOR UNAVALIABILITY
+    
     function actionOnClick()
     {
         console.log("Button Pressed");
@@ -57,6 +58,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
             var repair = 0;
             var pollution = 0;
             var bonus = 0;
+            var buyCost = 0;
             
             switch(key){
                 case 'wind':
@@ -71,6 +73,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     {
                         power /= 2;
                     }
+                    buyCost = windCost;
                     break;
                 case 'solar':
                     spriteKey = 'solarOW';
@@ -80,6 +83,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     install = 2000;
                     repair = 4;
                     pollution = 0;
+                    buyCost = solarCost;
                     break;
                 case 'coal':
                     spriteKey = 'coalOW';
@@ -95,6 +99,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                         pollution *= 2;
                         bonus = 2;
                     }
+                    buyCost = coalCost;
                     break;
                 case 'oil':
                     spriteKey = 'oilOW';
@@ -104,6 +109,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     install = 2000;
                     repair = 4;
                     pollution = 20;
+                    oilCost = oilCost;
                     break;
                 case 'hydro':
                     spriteKey = 'hydroOW';
@@ -113,6 +119,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     install = 2000;
                     repair = 4;
                     pollution = 0;
+                    buyCost = hydroCost;
                     break;
                 case 'nuclear':
                     spriteKey = 'nuclearOW';
@@ -122,13 +129,21 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     install = 2000;
                     repair = 4;
                     pollution = 0;
+                    buyCost = nuclearCost;
                     break;
             }
-            tile.name = key;
-            buildingTemp = new Building(game, spriteKey, tile.x, tile.y, power, moneyGenerated, timer, install, repair, pollution, index, bonus);
-            tile.building = buildingTemp;
-            sfxPlay('sfxBuild', 1);
-            setGridArrays(index, tile.building);
+            if (money < buyCost){
+                
+            }
+            else
+            {
+                tile.name = key;
+                buildingTemp = new Building(game, spriteKey, tile.x, tile.y, power, moneyGenerated, timer, install, repair, pollution, index, bonus);
+                tile.building = buildingTemp;
+                sfxPlay('sfxBuild', 1);
+                money -= buyCost;
+                setGridArrays(index, tile.building);
+            }
         }
         
         function setGridArrays(index, building){

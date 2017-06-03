@@ -119,6 +119,7 @@ gameStates.Start.prototype = {
         //----FUNCTION: goFull----//
         
         function gofull() {
+            //game.state.start('MainMenu');
             game.state.start('MainMenu');
             game.scale.startFullScreen(false);
         }
@@ -293,20 +294,21 @@ gameStates.Play.prototype = {
         }
         residualPollution = 0;
         
+        coalCost = 1500;
+        oilCost = 4000;
+        solarCost = 2000;
+        windCost = 3000;
+        hydroCost = 5000;
+        nuclearCost = 6000;
         
         //button prefabs
         //game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost, starting amount of factories, pollution
-        solarCost = 2000;
+        
         solar =     new PowerSource( game ,'solar', 1150, 450, 2, 10, 4, solarCost, 4, 0, 0);
-        coalCost = 1500;
         coal =      new PowerSource( game ,'coal', 1150, 150, 10, 30, 4, coalCost, 4, 0, 10);
-        windCost = 3000;
         wind =      new PowerSource( game ,'wind', 1150, 350, 30, 90, 4, windCost, 4, 0, 0);
-        oilCost = 4000;
         oil =      new PowerSource( game ,'oil', 1150, 250, 35, 120, 4, oilCost, 4, 0, 20);
-        hydroCost = 5000;
         hydro =      new PowerSource( game ,'hydro', 1150, 550, 70, 140, 4, hydroCost, 4, 0, 0);
-        nuclearCost = 6000;
         nuclear =   new PowerSource( game ,'nuclear', 1150, 650, 60, 240, 4, nuclearCost, 4, 0, 10);
         //sell = new PowerSource( game ,'sell', 150, 650);
         //repair = new PowerSource( game, 'repair', 250, 650);

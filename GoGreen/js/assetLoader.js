@@ -85,6 +85,7 @@ function loadAllSprites() {
     game.load.spritesheet('restartMouse', 'assets/images/RestartMouseUI.png', 800, 200);
     
     game.load.spritesheet('skyWin', 'assets/images/skyWin.png', 1200, 1200);
+    game.load.spritesheet('selector', 'assets/images/selector.png', 200, 200);
 }
 
 function loadAllAudio() {

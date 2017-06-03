@@ -2,8 +2,11 @@
 // Tile.js
 // - Tile prefab for the tiles
 //==================================================================//
+
 var isSelected = false;
 var selectedButton;
+var selectedHighlight;
+
 //game, key of the tile, xposition, yposition, occupied, key of the building, reference to building, index of the tile
 function Tile (game, key, xPos, yPos, name, building, tileIndex)
 {
@@ -12,59 +15,62 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
 	Phaser.Sprite.call(this, game, xPos, yPos, key);
     this.button = game.add.button(xPos , yPos, key, actionOnClick, this);
     this.button.scale.setTo(.5);
+    
+    this.selectSprite = game.add.sprite(xPos, yPos, 'selector');
+    this.selectSprite.animations.add('select', [0,1,0,1], 2, true);
+    this.selectSprite.animations.play('select');
+    this.selectSprite.scale.setTo(0);
+    
     bfx01 = game.add.audio('button');
     bfx02 = game.add.audio('wrong');
     bfx03 = game.add.audio('occupied');
     bfx04 = game.add.audio('sell');
     
-    function deselect(btn)
+    function deselect(btn, highlight)
     {
-       btn.frame = 0;
+        btn.frame = 0;
+        highlight.scale.setTo(0);
     }
     
     //remove icons
     function removeIcons()
     {
-      if(solarExist)
-      {
-        solar.button.kill();
-        solar.kill();
-        solarExist = false;
-      }
-
-      if(windExist)
-      {
-        wind.button.kill();
-        wind.kill();
-        windExist = false;
-      }
-      if(coalExist)
-      { 
-        coal.button.kill();
-        coal.kill();
-        coalExist = false;
-      }
-      if(oilExist)
-      {
-        oil.button.kill();
-        oil.kill();
-        oilExist = false;
-      }
-
-      if(hydroExist)
-      {
-        hydro.button.kill();
-        hydro.kill();
-        hydroExist = false;
-      }
-
-      if(nuclearExist)
-      {
-        nuclear.button.kill();
-        nuclear.kill();
-        nuclearExist = false;
-      }
-        
+        if(solarExist)
+        {
+            solar.button.kill();
+            solar.kill();
+            solarExist = false;
+        }
+        if(windExist)
+        {
+            wind.button.kill();
+            wind.kill();
+            windExist = false;
+        }
+        if(coalExist)
+        { 
+            coal.button.kill();
+            coal.kill();
+            coalExist = false;
+        }
+        if(oilExist)
+        {
+            oil.button.kill();
+            oil.kill();
+            oilExist = false;
+        }
+        if(hydroExist)
+        {
+            hydro.button.kill();
+            hydro.kill();
+            hydroExist = false;
+        }
+        if(nuclearExist)
+        {
+            nuclear.button.kill();
+            nuclear.kill();
+            nuclearExist = false;
+        }
         if(sellExist)
         {
             sell.button.kill();
@@ -89,7 +95,8 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
             if(selectedButton != this.button)
             {
                 selectedButton = this.button;
-                selectedButton.frame = 1;
+                selectedHighlight = this.selectSprite;
+                selectedHighlight.scale.setTo(.5);
                 isSelected = true;
             }
         }
@@ -97,8 +104,12 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
         {
             if(selectedButton != this.button)
             {
-              deselect(selectedButton);
-              isSelected = false;
+                deselect(selectedButton, selectedHighlight);
+                selectedButton = this.button;
+                selectedHighlight = this.selectSprite;
+                selectedHighlight.scale.setTo(.5);
+                isSelected = true;
+                //isSelected = false;
             }
         }
 
@@ -108,45 +119,34 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
                 if(key == 'mountain')
                 {
                     removeIcons();
-                    solarCost = 2000;
                     solarExist = true;
                     solar =     new PowerSource( game ,'solar', 1150, 850, tileIndex, this);
-                    coalCost = 1500;
                     coalExist = true;
                     coal =      new PowerSource( game ,'coal', 950, 850, tileIndex, this);
-                    windCost = 3000;
                     windExist = true;
                     wind =      new PowerSource( game ,'wind', 1050, 850, tileIndex, this);
                 }
                 else if(key == 'water')
                 {
                     removeIcons();
-                    windCost = 3000;
                     windExist = true;
                     wind =      new PowerSource( game ,'wind', 1050, 850, tileIndex, this);
-                    oilCost = 4000;
                     oilExist = true;
                     oil =      new PowerSource( game ,'oil', 950, 850, tileIndex, this);
-                    hydroCost = 5000;
                     hydroExist = true;
                     hydro =      new PowerSource( game ,'hydro', 1150, 850, tileIndex, this);
                 }
                 else if(key == 'grass')
                 {
                     removeIcons();
-                    solarCost = 2000;
                     solarExist = true;
                     solar =     new PowerSource( game ,'solar', 950, 950, tileIndex, this);
-                    coalCost = 1500;
                     coalExist = true;
                     coal =      new PowerSource( game ,'coal', 950, 850, tileIndex, this);
-                    windCost = 3000;
                     windExist = true;
                     wind =      new PowerSource( game ,'wind', 1150, 850, tileIndex, this);
-                    oilCost = 4000;
                     oilExist = true;
                     oil =      new PowerSource( game ,'oil', 1050, 850, tileIndex, this);
-                    nuclearCost = 6000;
                     nuclearExist = true;
                     nuclear =   new PowerSource( game ,'nuclear', 1050, 950, tileIndex, this);
                 }
@@ -155,9 +155,9 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
             {
                 removeIcons();
                 sellExist = true;
-                sell = new PowerSource( game ,'sell', 950, 850, tileIndex, this);
+                sell = new PowerSource(game, 'sell', 950, 850, tileIndex, this);
                 repairExist = true;
-                repair = new PowerSource( game ,'repair', 1050, 850, tileIndex, this);
+                repair = new PowerSource(game, 'repair', 1050, 850, tileIndex, this);
             }
         }
         else
