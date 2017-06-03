@@ -58,7 +58,7 @@ function loadAllImages() {
     
     //game.load.image('city2', 'assets/images/city.png');
     
-    game.load.image('hudInfobox', 'assets/images/hudInfo.png');
+    
     game.load.image('hudSidebars', 'assets/images/hudSidebars.png');
     game.load.image('hudResources', 'assets/images/hudInfoResources.png');
     game.load.image('hudActionbox', 'assets/images/hudInfoActions.png');
@@ -90,7 +90,7 @@ function loadAllSprites() {
     game.load.spritesheet('city', 'assets/images/City.png', 500, 500);
     game.load.spritesheet('titleMouse', 'assets/images/StartMouseUI.png', 800, 200);
     game.load.spritesheet('restartMouse', 'assets/images/RestartMouseUI.png', 800, 200);
-    
+    game.load.spritesheet('hudInfobox', 'assets/images/Info.png', 600, 800);
     game.load.spritesheet('skyWin', 'assets/images/skyWin.png', 1200, 1200);
     game.load.spritesheet('selector', 'assets/images/selector.png', 200, 200);
 
