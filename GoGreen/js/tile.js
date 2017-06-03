@@ -119,36 +119,69 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
                 if(key == 'mountain')
                 {
                     removeIcons();
-                    solarExist = true;
-                    solar =     new PowerSource( game ,'solar', 1150, 950, tileIndex, this);
-                    coalExist = true;
-                    coal =      new PowerSource( game ,'coal', 950, 950, tileIndex, this);
-                    windExist = true;
-                    wind =      new PowerSource( game ,'wind', 1050, 950, tileIndex, this);
+                    if (isResearched('solar'))
+                    {
+                        solarExist = true;
+                        solar =     new PowerSource( game ,'solar', getActButtonX('solar'), getActButtonY('solar'), tileIndex, this);
+                    }
+                    if (isResearched('coal'))
+                    {
+                        coalExist = true;
+                        coal =      new PowerSource( game ,'coal', getActButtonX('coal'), getActButtonY('coal'), tileIndex, this);
+                    }
+                    if (isResearched('wind'))
+                    {
+                        windExist = true;
+                        wind =      new PowerSource( game ,'wind', getActButtonX('wind'), getActButtonY('wind'), tileIndex, this);
+                    }
                 }
                 else if(key == 'water')
                 {
                     removeIcons();
-                    windExist = true;
-                    wind =      new PowerSource( game ,'wind', 1050, 950, tileIndex, this);
-                    oilExist = true;
-                    oil =      new PowerSource( game ,'oil', 950, 950, tileIndex, this);
-                    hydroExist = true;
-                    hydro =      new PowerSource( game ,'hydro', 1150, 950, tileIndex, this);
+                    if (isResearched('wind'))
+                    {
+                        windExist = true;
+                        wind =      new PowerSource( game ,'wind', getActButtonX('wind'), getActButtonY('wind'), tileIndex, this);
+                    }
+                    if (isResearched('oil'))
+                    {
+                        oilExist = true;
+                        oil =      new PowerSource( game ,'oil', getActButtonX('oil'), getActButtonY('oil'), tileIndex, this);
+                    }
+                    if (isResearched('hydro'))
+                    {
+                        hydroExist = true;
+                        hydro =      new PowerSource( game ,'hydro', getActButtonX('hydro'), getActButtonY('hydro'), tileIndex, this);
+                    }
                 }
                 else if(key == 'grass')
                 {
                     removeIcons();
-                    solarExist = true;
-                    solar =     new PowerSource( game ,'solar', 950, 1050, tileIndex, this);
-                    coalExist = true;
-                    coal =      new PowerSource( game ,'coal', 950, 950, tileIndex, this);
-                    windExist = true;
-                    wind =      new PowerSource( game ,'wind', 1150, 950, tileIndex, this);
-                    oilExist = true;
-                    oil =      new PowerSource( game ,'oil', 1050, 950, tileIndex, this);
-                    nuclearExist = true;
-                    nuclear =   new PowerSource( game ,'nuclear', 1050, 1050, tileIndex, this);
+                    if (isResearched('solar'))
+                    {
+                        solarExist = true;
+                        solar =     new PowerSource( game ,'solar', getActButtonX('solar'), getActButtonY('solar'), tileIndex, this);
+                    }
+                    if (isResearched('coal'))
+                    {
+                        coalExist = true;
+                        coal =      new PowerSource( game ,'coal', getActButtonX('coal'), getActButtonY('coal'), tileIndex, this);
+                    }
+                    if (isResearched('wind'))
+                    {
+                        windExist = true;
+                        wind =      new PowerSource( game ,'wind', getActButtonX('wind'), getActButtonY('wind'), tileIndex, this);
+                    }
+                    if (isResearched('oil'))
+                    {
+                        oilExist = true;
+                        oil =      new PowerSource( game ,'oil', getActButtonX('oil'), getActButtonY('oil'), tileIndex, this);
+                    }
+                    if (isResearched('nuclear'))
+                    {
+                        nuclearExist = true;
+                        nuclear =   new PowerSource( game ,'nuclear', getActButtonX('nuclear'), getActButtonY('nuclear'),  tileIndex, this);
+                    }
                 }
             }
             else

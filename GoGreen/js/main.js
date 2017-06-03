@@ -300,12 +300,12 @@ gameStates.Play.prototype = {
         //button prefabs
         //game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost, starting amount of factories, pollution
         
-        solar =     new PowerSource( game ,'solar', 1150, 450, 2, 10, 4, solarCost, 4, 0, 0);
-        coal =      new PowerSource( game ,'coal', 1150, 150, 10, 30, 4, coalCost, 4, 0, 10);
-        wind =      new PowerSource( game ,'wind', 1150, 350, 30, 90, 4, windCost, 4, 0, 0);
-        oil =      new PowerSource( game ,'oil', 1150, 250, 35, 120, 4, oilCost, 4, 0, 20);
-        hydro =      new PowerSource( game ,'hydro', 1150, 550, 70, 140, 4, hydroCost, 4, 0, 0);
-        nuclear =   new PowerSource( game ,'nuclear', 1150, 650, 60, 240, 4, nuclearCost, 4, 0, 10);
+        solar =     new PowerSource( game ,'researchSolar', 1150, 450, -1, -1, this);
+        coal =      new PowerSource( game ,'researchCoal', 1150, 150, -1, -1, this);
+        wind =      new PowerSource( game ,'researchWind', 1150, 350, -1, -1, this);
+        oil =      new PowerSource( game ,'researchOil', 1150, 250, -1, -1, this);
+        hydro =      new PowerSource( game ,'researchHydro', 1150, 550, -1, -1, this);
+        nuclear =   new PowerSource( game ,'researchNuclear', 1150, 650, -1, -1, this);
         //sell = new PowerSource( game ,'sell', 150, 650);
         //repair = new PowerSource( game, 'repair', 250, 650);
         

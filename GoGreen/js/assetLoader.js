@@ -22,21 +22,27 @@ function loadAllImages() {
     game.load.image('curtain' , 'assets/images/curtain.png');
 
     game.load.image('wind', 'assets/images/UpWind.png');
+    game.load.image('researchWind', 'assets/images/UpWind.png');
     game.load.image('windOW', 'assets/images/WindOW.png');
 
     game.load.image('nuclear', 'assets/images/UpNuclear.png');
+    game.load.image('researchNuclear', 'assets/images/UpNuclear.png');
     game.load.image('nuclearOW', 'assets/images/NuclearOW.png');
 
     game.load.image('solar', 'assets/images/UpSolar.png');
+    game.load.image('researchSolar', 'assets/images/UpSolar.png');
     game.load.image('solarOW', 'assets/images/SolarOW.png');
 
     game.load.image('coal', 'assets/images/UpCoal.png');
+    game.load.image('researchCoal', 'assets/images/UpCoal.png');
     game.load.image('coalOW', 'assets/images/CoalOW.png');
 
     game.load.image('oil', 'assets/images/UpOil.png');
+    game.load.image('researchOil', 'assets/images/UpOil.png');
     game.load.image('oilOW', 'assets/images/OilOW.png');
 
     game.load.image('hydro', 'assets/images/UpHydro.png');
+    game.load.image('researchHydro', 'assets/images/UpHydro.png');
     game.load.image('hydroOW', 'assets/images/HydroOW.png');
 
 

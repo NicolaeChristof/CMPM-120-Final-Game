@@ -27,35 +27,60 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
     
     // ToDo: MAKE BUTTON SPRITES FOR UNAVALIABILITY
     
+    
 
     function pSourceClick()
     {
         console.log("Button Pressed");
-        if(isSelected)
-        {
-            if(isOccupied[index] == false && (key != 'sell' && key != 'repair'))
+        if (key != 'researchCoal' && key != 'researchOil' && key != 'researchSolar' && key != 'researchWind' && key != 'researchHydro' && key != 'researchNuclear'){
+            if(isSelected)
             {
-                //update number of sources when necessary
-                createNewBuilding(key, tile, index);
-            }
-            else
-            {
-                switch(key) {
-                    case 'sell':
-                        clearGridArrays(index, tile.building);
-                        break;
-                    case 'repair':
-                        if(money >= tile.building.repair)
-                        {
-                            money-= tile.building.repair;
-                            game.time.events.remove(tile.building.initialTimer);
-                            game.time.events.remove(tile.building.repairTimer);
-                            game.time.events.remove(tile.building.warningTimer);
-                            buildingTimer(tile.building);
-                        }
-                        
-                        break;
+                if(isOccupied[index] == false && (key != 'sell' && key != 'repair'))
+                {
+                    //update number of sources when necessary
+                    createNewBuilding(key, tile, index);
                 }
+                else
+                {
+                    switch(key) {
+                        case 'sell':
+                            clearGridArrays(index, tile.building);
+                            break;
+                        case 'repair':
+                            if(money >= tile.building.repair)
+                            {
+                                money-= tile.building.repair;
+                                game.time.events.remove(tile.building.initialTimer);
+                                game.time.events.remove(tile.building.repairTimer);
+                                game.time.events.remove(tile.building.warningTimer);
+                                buildingTimer(tile.building);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+        else 
+        {
+            switch(key) {
+                case 'researchCoal':
+                    research('coal');
+                    break;
+                case 'researchOil':
+                    research('oil');
+                    break;
+                case 'researchSolar':
+                    research('solar');
+                    break;
+                case 'researchWind':
+                    research('wind');
+                    break;
+                case 'researchHydro':
+                    research('hydro');
+                    break;
+                case 'researchNuclear':
+                    research('nuclear');
+                    break;        
             }
         }
         
