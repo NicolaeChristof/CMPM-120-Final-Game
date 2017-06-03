@@ -39,7 +39,6 @@ function loadAllImages() {
     game.load.image('hydro', 'assets/images/UpHydro.png');
     game.load.image('hydroOW', 'assets/images/HydroOW.png');
 
-    game.load.image('controlpanel' , 'assets/images/UI2.png');
 
     game.load.image('start', 'assets/images/Start.png');
     game.load.image('startClouds', 'assets/images/StartClouds.png');
@@ -49,12 +48,14 @@ function loadAllImages() {
 
     game.load.image('repair', 'assets/images/Repair.png');
     game.load.image('repair2' ,'assets/images/RepairCursor.png');
+
     
     //game.load.image('city2', 'assets/images/city.png');
     
     game.load.image('hudInfobox', 'assets/images/hudInfo.png');
     game.load.image('hudSidebars', 'assets/images/hudSidebars.png');
     game.load.image('hudResources', 'assets/images/hudInfoResources.png');
+    game.load.image('hudActionbox', 'assets/images/hudInfoActions.png');
     game.load.image('hudMoney', 'assets/images/hudInfoMoney.png');
     
     game.load.image('StartTitle', 'assets/images/StartGameTitle.png');
@@ -86,6 +87,8 @@ function loadAllSprites() {
     
     game.load.spritesheet('skyWin', 'assets/images/skyWin.png', 1200, 1200);
     game.load.spritesheet('selector', 'assets/images/selector.png', 200, 200);
+
+    game.load.spritesheet('repairStatus', 'assets/images/RepairSignalSheet2.png', 200, 200);
 }
 
 function loadAllAudio() {

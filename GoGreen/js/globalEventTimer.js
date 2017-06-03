@@ -39,15 +39,19 @@ function globalEvents() {
 
 function buildingTimer(building)
 {
- building.repairTimer = game.time.events.add(Phaser.Timer.SECOND * 30, decay, this, building);
- console.log(building.repairTimer);
+ building.signal.frame = 0;
+ building.repairTimer = game.time.events.add(Phaser.Timer.SECOND * 10, repairSwitch, this, building);
+ building.warningTimer = game.time.events.add(Phaser.Timer.SECOND * 18, warningSwitch, this, building);
+ building.initialTimer = game.time.events.add(Phaser.Timer.SECOND * 20, decay, this, building);
+
+ //console.log(building.initialTimer);
 }
 
 function pollutionTimer(building)
 {
   var index = building.index;	
   var temp = game.time.events.add(Phaser.Timer.SECOND * 60, removePollution, this, index);
-  console.log(temp);
+  //console.log(temp);
 }
 
 function removePollution(index)
@@ -57,7 +61,19 @@ function removePollution(index)
 
 function decay(building)
 {
-      console.log("timer");
-      console.log(building.index);
+      building.signal.frame = 3;
+      //console.log("timer");
+      //console.log(building.index);
       totalIncome[building.index] = power[building.index] = 0;
+
+}
+
+function repairSwitch(building)
+{
+    building.signal.frame = 1;
+}
+
+function warningSwitch(building)
+{
+    building.signal.frame = 2;
 }

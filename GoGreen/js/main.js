@@ -88,7 +88,7 @@ gameStates.Preloader.prototype = {
     },
     create: function(){
         console.log('Preloader: create');
-        game.state.start('Start');
+        game.state.start('Game');
         game.canvas.oncontextmenu = function (e) { e.preventDefault(); } // Prevent Right Click Pop-ups
     }
 }
@@ -231,7 +231,6 @@ gameStates.Play.prototype = {
         cloud = game.add.sprite(0, 0, 'clouds');
         cloudGoUp = -.1;
         
-        //cloud2 = game.add.sprite(100, 0, 'cloud');
         
         sideUI = game.add.sprite(0,0, 'hudSidebars');
         sideUI.scale.setTo(.5);
@@ -241,18 +240,15 @@ gameStates.Play.prototype = {
         percentageCO2 = 0;
         
         gaugeCO2Loss = game.add.sprite(25,75, 'gaugeCO2Loss');
-        gaugeCO2Loss.scale.setTo(1,0);
-        
-        //bUI = game.add.sprite(1000, 0, 'controlpanel');
-        //bUI.scale.setTo(.5);
+        gaugeCO2Loss.scale.setTo(1,0);    
         
         tileInfoUI = game.add.sprite(0, gameScreenProperties.height - (gridTileSize * (gridHeight+1)), 'hudInfobox');
         tileInfoUI.scale.setTo(.5);
         
-        actionInfoUI = game.add.sprite(gameScreenProperties.width - 300, gameScreenProperties.height - (gridTileSize * (gridHeight+1)), 'hudInfobox');
+        actionInfoUI = game.add.sprite(gameScreenProperties.width - 300, (gameScreenProperties.height - (gridTileSize * (gridHeight+1))) + 100, 'hudActionbox');
         actionInfoUI.scale.setTo(.5);
         
-        moneyInfoUI = game.add.sprite(gameScreenProperties.width - 300, gameScreenProperties.height - (gridTileSize * (gridHeight+2)), 'hudMoney');
+        moneyInfoUI = game.add.sprite(gameScreenProperties.width - 300, (gameScreenProperties.height - (gridTileSize * (gridHeight+2))) + 100, 'hudMoney');
         moneyInfoUI.scale.setTo(.5);
         
         resourceUI = game.add.sprite(300, gameScreenProperties.height - (gridTileSize * (gridHeight+1)),'hudResources');
@@ -314,7 +310,7 @@ gameStates.Play.prototype = {
         //repair = new PowerSource( game, 'repair', 250, 650);
         
        
-        moneyText = game.add.text(1070, gameScreenProperties.height - 445, money, { fontSize: '32px', fill: '#000', align: 'right' });
+        moneyText = game.add.text(1070, gameScreenProperties.height - 345, money, { fontSize: '32px', fill: '#000', align: 'right' });
         moneyText.anchor.y = .5;
         revenueText = game.add.text(370, gameScreenProperties.height - 345, '+0v' + money, { fontSize: '24px', fill: '#000' });
         revenueText.anchor.y = .5;
@@ -343,22 +339,6 @@ gameStates.Play.prototype = {
         else if (cloud.y <= -20){
             cloudGoUp = .1;
         }
-
-
-        /*
-        var temp = 0;
-        pollution = 0;
-        for(var i = 0; i < 25; i++)
-        {
-            temp += power[i];
-            pollution += totalPollution[i];
-        }
-        
-        pollution = pollution * .001;
-        voltage = temp;
-        
-        powerText.text = 'Power Generated: ' + voltage + ' Volts';  
-        */
         
         
         //update money
@@ -462,14 +442,7 @@ gameStates.Play.prototype = {
             }
         }
 
-        /*
-        //if an icon is clicked set the position to the mouse
-        if(windExist || coalExist || hydroExist || nuclearExist || solarExist || sellExist || oilExist || repairExist)
-        {
-            iconTemp.x = game.input.mousePointer.x;
-            iconTemp.y = game.input.mousePointer.y;
-        }
-        */
+       
         if(voltage == 0)
         {
             city.frame = 0;

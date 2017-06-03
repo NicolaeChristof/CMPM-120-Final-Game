@@ -4,7 +4,7 @@
 //==================================================================//
 
 var buildingTemp;
-//game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost
+//game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost, pollution, tile index, terrain modifier, repair status
 function Building (game, key, xPos, yPos, power, money, timer, install, repair, pollution, index, boost)
 {
     //passing x and y pos and the key
@@ -26,7 +26,14 @@ function Building (game, key, xPos, yPos, power, money, timer, install, repair, 
     this.repair = repair;
     this.pollution = pollution;
     this.index = index;
-    this.repairTimer;
+    this.signal = game.add.sprite(xPos, yPos, 'repairStatus');
+    this.signal.scale.setTo(.5);
+
+    
+
+    this.initialTimer; //the intial timer that powers the building down
+    this.repairTimer; //sets the status to needs repair 
+    this.warningTimer; //sets the status to almost broken
 }
 
 Building.prototype = Object.create(Phaser.Sprite.prototype);
