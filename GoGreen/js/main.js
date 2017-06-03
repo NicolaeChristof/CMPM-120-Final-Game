@@ -330,7 +330,44 @@ gameStates.Play.prototype = {
     
     //increases money based off the number of sources
     update: function() {
-         
+        
+	  if(coal.button.input.pointerOver())
+        {
+            tileInfoUI.frame = 1;
+            coal.button.alpha = .75;
+        }
+        else if(oil.button.input.pointerOver())
+        {
+           tileInfoUI.frame = 2;
+           oil.button.alpha = .75;
+        }
+        else if(solar.button.input.pointerOver())
+        {
+           tileInfoUI.frame = 3;
+           solar.button.alpha = .75;
+        }
+        else if(wind.button.input.pointerOver())
+        {
+           tileInfoUI.frame = 4;
+           wind.button.alpha = .75;
+        }
+        else if(hydro.button.input.pointerOver())
+        {
+           tileInfoUI.frame = 5;
+           hydro.button.alpha = .75;
+        }
+        else if(nuclear.button.input.pointerOver())
+        {
+           tileInfoUI.frame = 6;
+           nuclear.button.alpha = .75;
+        }
+        else
+        {
+            tileInfoUI.frame = 0;
+            coal.button.alpha = oil.button.alpha = solar.button.alpha = wind.button.alpha = hydro.button.alpha = nuclear.button.alpha = 1;
+
+        }
+	    
         bgClouds.tilePosition.x -= 2;
         cloud.y += cloudGoUp;
         if (cloud.y >= 0){
