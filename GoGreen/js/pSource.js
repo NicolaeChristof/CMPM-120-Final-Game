@@ -24,7 +24,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
     icon.anchor.setTo(.5);
     icon.scale.setTo(.5);
     this.button = icon;
-    
+    this.button.inputEnabled = true;
     // ToDo: MAKE BUTTON SPRITES FOR UNAVALIABILITY
     
     
