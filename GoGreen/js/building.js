@@ -14,13 +14,15 @@ function Building (game, key, xPos, yPos, power, money, timer, install, repair, 
     if (boost == 2){
         this.buildingIconBonus = game.add.sprite(xPos, yPos, 'iconDouble');
         this.buildingIconBonus.scale.setTo(.5);
+        this.money = money * 2;
     }
     else{
         this.buildingIconBonus = game.add.sprite(xPos, yPos, 'iconEmpty');
         this.buildingIconBonus.scale.setTo(.5);
+        this.money = money;
     }
     this.power = power;
-    this.money = money;
+    //this.money = money;
     this.timer = timer;
     this.install = install;
     this.repair = repair;

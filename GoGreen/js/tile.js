@@ -188,9 +188,9 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
             {
                 removeIcons();
                 sellExist = true;
-                sell = new PowerSource(game, 'sell', 975, 1150, tileIndex, this);
+                sell = new PowerSource(game, 'sell', 1125, 1150, tileIndex, this);
                 repairExist = true;
-                repair = new PowerSource(game, 'repair', 1125, 1150, tileIndex, this);
+                repair = new PowerSource(game, 'repair', 975, 1150, tileIndex, this);
             }
         }
         else

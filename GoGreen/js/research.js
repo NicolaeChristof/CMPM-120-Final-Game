@@ -5,12 +5,12 @@
 
 var researchedBuildings = new Array(6);
 
-var researchCostWind    = 0;
-var researchCostSolar   = 0;
+var researchCostWind    = 30000;
+var researchCostSolar   = 20000;
 var researchCostCoal    = 0;
-var researchCostOil     = 0;
-var researchCostHydro   = 0;
-var researchCostNuclear = 0;
+var researchCostOil     = 5000;
+var researchCostHydro   = 35000;
+var researchCostNuclear = 60000;
 
 var totalResearched = 0;
 
@@ -168,39 +168,57 @@ function research(key) {
         switch(key) {
             case 'wind':
                 if (researchedBuildings[0]) break;
+                money -= researchCostWind;
                 researchedBuildings[0] = true;
                 setActButtonIndex(key);
                 totalResearched += 1;
+                windResearch.button.kill();
+                windResearch.kill();
                 break;
             case 'solar':
                 if (researchedBuildings[1]) break;
+                money -= researchCostSolar;
                 researchedBuildings[1] = true;
                 setActButtonIndex(key);
                 totalResearched += 1;
+                solarResearch.button.kill();
+                solarResearch.kill();
                 break;
             case 'coal':
                 if (researchedBuildings[2]) break;
+                money -= researchCostCoal;
                 researchedBuildings[2] = true;
                 setActButtonIndex(key);
                 totalResearched += 1;
+                coalResearch.button.kill();
+                coalResearch.kill();
                 break;
             case 'oil':
                 if (researchedBuildings[3]) break;
+                money -= researchCostOil;
                 researchedBuildings[3] = true;
                 setActButtonIndex(key);
                 totalResearched += 1;
+                oilResearch.button.kill();
+                oilResearch.kill();
                 break;
             case 'hydro':
                 if (researchedBuildings[4]) break;
+                money -= researchCostHydro;
                 researchedBuildings[4] = true;
                 setActButtonIndex(key);
                 totalResearched += 1;
+                hydroResearch.button.kill();
+                hydroResearch.kill();
                 break;
             case 'nuclear':
                 if (researchedBuildings[5]) break;
+                money -= researchCostNuclear;
                 researchedBuildings[5] = true;
                 setActButtonIndex(key);
                 totalResearched += 1;
+                nuclearResearch.button.kill();
+                nuclearResearch.kill();
                 break;
         }
     }

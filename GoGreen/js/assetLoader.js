@@ -11,7 +11,7 @@ function loadAllAssets() {
 
 //----LOAD IMAGES----//
 function loadAllImages() {
-    //game.load.image('cloud', 'assets/images/randall.png');
+
     game.load.image('clouds', 'assets/images/clouds.png');
     game.load.image('sky' , 'assets/images/sky.png');
     game.load.image('skyCO2' , 'assets/images/skyCO2.png');
@@ -100,7 +100,7 @@ function loadAllSprites() {
 function loadAllAudio() {
     //----LOAD BGM----//
     game.load.audio('bgm', ['assets/audio/bgm/bgm.ogg','assets/audio/bgm/bgm.mp3' ]);
-    game.load.audio('bgm2', ['assets/audio/bgm/bgm_2.ogg','assets/audio/bgm/bgm_2.mp3' ]);
+    game.load.audio('bgm4', ['assets/audio/bgm/bgm_4.ogg','assets/audio/bgm/bgm_4.mp3' ]);
     game.load.audio('bgmTitle', ['assets/audio/bgm/bgm_title.ogg','assets/audio/bgm/bgm_title.mp3' ]);
 
     //----LOAD SFX----//

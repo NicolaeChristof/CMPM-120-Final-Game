@@ -37,28 +37,47 @@ var money; //player's money
 var co2;
 var pollution = .01;
 var residualPollution = 0;
-var voltageWinCondition = 500;
+var voltageWinCondition = 100;
 var death;
 var deathCause = ''; // 'co2'/'powerless'
 var win;
 
 var solarCost;
-var solarTimer;
+var solarPower = 5;
+var solarTimer = 240;
+var solarRepair = 3000;
+var solarIncome = 30;
 
 var coalCost;
-var coalTimer;
+var coalPower = 8;
+var coalTimer = 180;
+var coalRepair = 1000;
+var coalIncome = 35;
 
 var oilCost;
-var oilTimer;
+var oilPower = 16;
+var oilTimer = 90;
+var oilRepair = 1500;
+var oilIncome = 100;
+
 
 var windCost;
-var windTimer;
+var windPower = 12;
+var windTimer = 30;
+var windRepair = 2000;
+var windIncome = 100;
 
 var hydroCost;
-var hydroTimer;
+var hydroPower = 10;
+var hydroTimer = 45;
+var hydroRepair = 3000;
+var hydroIncome = 125;
 
 var nuclearCost;
-var nuclearTimer;
+var nuclearPower = 20;
+var nuclearTimer = 20;
+var nuclearRepair = 2500;
+var nuclearIncome = 75;
 
 var repair;
 
@@ -88,7 +107,7 @@ gameStates.Preloader.prototype = {
     },
     create: function(){
         console.log('Preloader: create');
-        game.state.start('Game');
+        game.state.start('Start');
         game.canvas.oncontextmenu = function (e) { e.preventDefault(); } // Prevent Right Click Pop-ups
     }
 }
@@ -205,12 +224,12 @@ gameStates.Play.prototype = {
     
     create: function(){
         this.camera.flash('#000000', 1000);
-        money = 10000;
+        money = 1500000;
         death = false;
         win = false;
         buildingPlaced = false;
         bgmPlaying = false;
-
+        initializeResearch();
         startGlobalEvents();
         bgmPlay('bgm', .25);
         
@@ -290,27 +309,25 @@ gameStates.Play.prototype = {
         }
         residualPollution = 0;
         
-        coalCost = 1500;
-        oilCost = 4000;
-        solarCost = 2000;
-        windCost = 3000;
-        hydroCost = 5000;
-        nuclearCost = 6000;
+        coalCost = 1000;
+        oilCost = 3000;
+        solarCost = 3000;
+        windCost = 5000;
+        hydroCost = 5500;
+        nuclearCost = 10000;
         
-        //button prefabs
-        //game, key, xposition, yposition, power generated, money generated, maintenance timer, install cost, repair cost, starting amount of factories, pollution
         
-        solar =     new PowerSource( game ,'researchSolar', 1150, 450, -1, -1, this);
-        coal =      new PowerSource( game ,'researchCoal', 1150, 150, -1, -1, this);
-        wind =      new PowerSource( game ,'researchWind', 1150, 350, -1, -1, this);
-        oil =      new PowerSource( game ,'researchOil', 1150, 250, -1, -1, this);
-        hydro =      new PowerSource( game ,'researchHydro', 1150, 550, -1, -1, this);
-        nuclear =   new PowerSource( game ,'researchNuclear', 1150, 650, -1, -1, this);
-        //sell = new PowerSource( game ,'sell', 150, 650);
-        //repair = new PowerSource( game, 'repair', 250, 650);
+        //Research buttons
+        researchedBuildings[2] = true;
+        solarResearch =     new Research( game ,'researchSolar', 1150, 275);
+        windResearch =      new Research( game ,'researchWind', 1150, 400);
+        oilResearch =       new Research( game ,'researchOil', 1150, 150);
+        hydroResearch =     new Research( game ,'researchHydro', 1150, 525);
+        nuclearResearch =   new Research( game ,'researchNuclear', 1150, 650);
+
         
        
-        moneyText = game.add.text(1070, gameScreenProperties.height - 345, money, { fontSize: '32px', fill: '#000', align: 'right' });
+        moneyText = game.add.text(1000, gameScreenProperties.height - 345, money, { fontSize: '32px', fill: '#000', align: 'right' });
         moneyText.anchor.y = .5;
         revenueText = game.add.text(370, gameScreenProperties.height - 345, '+0v' + money, { fontSize: '24px', fill: '#000' });
         revenueText.anchor.y = .5;
@@ -324,6 +341,12 @@ gameStates.Play.prototype = {
         circledVoltage = game.add.sprite(0, 0, 'loseVoltageCircle');
         circledVoltage.scale.setTo(0);
 
+        hudCostText = game.add.text(125, 890,  '', {fontSize: '32px', fill: '#000'});
+        hudPowerText = game.add.text(125, 950, '', {fontSize: '32px', fill: '#000'});
+        hudTimerText = game.add.text(125, 1010, '', {fontSize: '32px', fill: '#000'});
+        hudRepairText = game.add.text(125, 1060, '', {fontSize: '32px', fill: '#000'});
+        hudIncomeText= game.add.text(125, 1115, '', {fontSize: '32px', fill: '#000'});
+
     },
     
     //====Game: UPDATE====//
@@ -331,41 +354,69 @@ gameStates.Play.prototype = {
     //increases money based off the number of sources
     update: function() {
         
-	  if(coal.button.input.pointerOver())
+
+	  if(coalExist && coal.button.input.pointerOver())
         {
             tileInfoUI.frame = 1;
-            coal.button.alpha = .75;
+            hudCostText.text = coalCost;
+            hudPowerText.text = coalPower;
+            hudTimerText.text = coalTimer;
+            hudRepairText.text = coalRepair;
+            hudIncomeText.text = coalIncome;           
         }
-        else if(oil.button.input.pointerOver())
+        else if(oilExist && oil.button.input.pointerOver())
         {
            tileInfoUI.frame = 2;
-           oil.button.alpha = .75;
+           hudCostText.text = oilCost;
+           hudPowerText.text = oilPower;
+           hudTimerText.text = oilTimer;
+           hudRepairText.text = oilRepair;
+           hudIncomeText.text = oilIncome;
         }
-        else if(solar.button.input.pointerOver())
+        else if(solarExist && solar.button.input.pointerOver())
         {
            tileInfoUI.frame = 3;
-           solar.button.alpha = .75;
+           hudCostText.text = solarCost;
+           hudPowerText.text = solarPower;
+           hudTimerText.text = solarTimer;
+           hudRepairText.text = solarRepair;
+           hudIncomeText.text = solarIncome;
         }
-        else if(wind.button.input.pointerOver())
+        else if(windExist && wind.button.input.pointerOver())
         {
            tileInfoUI.frame = 4;
-           wind.button.alpha = .75;
+           hudCostText.text = windCost;
+           hudPowerText.text = windPower;
+           hudTimerText.text = windTimer;
+           hudRepairText.text = windRepair;
+           hudIncomeText.text = windIncome;
         }
-        else if(hydro.button.input.pointerOver())
+        else if(hydroExist && hydro.button.input.pointerOver())
         {
            tileInfoUI.frame = 5;
-           hydro.button.alpha = .75;
+           hudCostText.text = hydroCost;
+           hudPowerText.text = hydroPower;
+           hudTimerText.text = hydroTimer;
+           hudRepairText.text = hydroRepair;
+           hudIncomeText.text = hydroIncome;
         }
-        else if(nuclear.button.input.pointerOver())
+        else if(nuclearExist && nuclear.button.input.pointerOver())
         {
            tileInfoUI.frame = 6;
-           nuclear.button.alpha = .75;
+           hudCostText.text = nuclearCost;
+           hudPowerText.text = nuclearPower;
+           hudTimerText.text = nuclearTimer;
+           hudRepairText.text = nuclearRepair;
+           hudIncomeText.text = nuclearIncome;
         }
         else
         {
             tileInfoUI.frame = 0;
-            coal.button.alpha = oil.button.alpha = solar.button.alpha = wind.button.alpha = hydro.button.alpha = nuclear.button.alpha = 1;
-
+            hudCostText.text = '';
+            hudPowerText.text = '';
+            hudTimerText.text = '';
+            hudRepairText.text = '';
+            hudIncomeText.text = '';  
         }
 	    
         bgClouds.tilePosition.x -= 2;
@@ -466,7 +517,7 @@ gameStates.Play.prototype = {
             {
                 bgmPlaying = true;
                 bgmStop();
-                bgmPlay('bgm2', .25);
+                bgmPlay('bgm4', .25);
                 //bgmPlay('bgm2', 1);
             }
         }
@@ -531,7 +582,7 @@ gameStates.GameOver.prototype = {
 	create: function(){
 		console.log('GameOver: create');
         bgmStop();
-        this.camera.flash('#000000', 1000);
+        //this.camera.flash('#000000', 1000);
         bgSky = game.add.sprite(0, 0, 'skyLose');
         switch(deathCause){
             case 'co2':
@@ -545,22 +596,23 @@ gameStates.GameOver.prototype = {
                 break;
          }
         
-        restartMouse = game.add.sprite(200, 600, 'restartMouse');
-        restartMouse.animations.add('select', [0,1,0,1], 2, true);
-        restartMouse.animations.add('started', [2], 8, true);
-        restartMouse.animations.play('select');
-        started = false;
-        playedSFX = false;
+            restartMouse = game.add.sprite(200, 600, 'restartMouse');
+            restartMouse.animations.add('select', [0,1,0,1], 2, true);
+            restartMouse.animations.add('started', [2], 8, true);
+            restartMouse.animations.play('select');
+            started = false;
+            playedSFX = false;
         
 	},
 	update: function(){
+
         game.input.onDown.add(openTheGame, this);
         
         if (started){
             bgmStop();
             if (!playedSFX) {
                 sfxPlay('sfxBoom', 1);
-                playedSFX=true;
+                playedSFX = true;
                 this.camera.fade('#FFFFFF', 2000);
                 this.camera.onFadeComplete.add(letUsStartTheGame,this);
             }

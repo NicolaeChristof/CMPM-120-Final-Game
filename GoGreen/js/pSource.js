@@ -32,7 +32,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
     function pSourceClick()
     {
         console.log("Button Pressed");
-        if (key != 'researchCoal' && key != 'researchOil' && key != 'researchSolar' && key != 'researchWind' && key != 'researchHydro' && key != 'researchNuclear'){
+        
             if(isSelected)
             {
                 if(isOccupied[index] == false && (key != 'sell' && key != 'repair'))
@@ -50,6 +50,8 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                             if(money >= tile.building.repair)
                             {
                                 money-= tile.building.repair;
+                                totalIncome[tile.building.index] = tile.building.money;
+                                power[tile.building.index] = tile.building.power;
                                 game.time.events.remove(tile.building.initialTimer);
                                 game.time.events.remove(tile.building.repairTimer);
                                 game.time.events.remove(tile.building.warningTimer);
@@ -59,30 +61,10 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     }
                 }
             }
-        }
-        else 
-        {
-            switch(key) {
-                case 'researchCoal':
-                    research('coal');
-                    break;
-                case 'researchOil':
-                    research('oil');
-                    break;
-                case 'researchSolar':
-                    research('solar');
-                    break;
-                case 'researchWind':
-                    research('wind');
-                    break;
-                case 'researchHydro':
-                    research('hydro');
-                    break;
-                case 'researchNuclear':
-                    research('nuclear');
-                    break;        
-            }
-        }
+        
+        
+           
+        
         
         function createNewBuilding(key, tile, index){
             var spriteKey = '';
@@ -98,11 +80,10 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
             switch(key){
                 case 'wind':
                     spriteKey = 'windOW';
-                    power = 30;
-                    moneyGenerated = 90;
-                    timer = 4;
-                    install = 2000;
-                    repair = 4;
+                    power = windPower;
+                    moneyGenerated = windIncome;
+                    timer = windTimer;
+                    repair = windRepair;
                     pollution = 0;
                     if(tile.key == 'mountain')
                     {
@@ -112,22 +93,20 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     break;
                 case 'solar':
                     spriteKey = 'solarOW';
-                    power = 30;
-                    moneyGenerated = 90;
-                    timer = 4;
-                    install = 2000;
-                    repair = 4;
+                    power = solarPower;
+                    moneyGenerated = solarIncome;
+                    timer = solarTimer;
+                    repair = solarRepair;
                     pollution = 0;
                     buyCost = solarCost;
                     break;
                 case 'coal':
                     spriteKey = 'coalOW';
-                    power = 30;
-                    moneyGenerated = 90;
-                    timer = 4;
-                    install = 2000;
-                    repair = 4;
-                    pollution = 10;
+                    power = coalPower;
+                    moneyGenerated = coalIncome;
+                    timer = coalTimer;
+                    repair = coalRepair;
+                    pollution = 3;
                     if(tile.key == 'mountain')
                     {
                         power *= 2;
@@ -138,31 +117,28 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     break;
                 case 'oil':
                     spriteKey = 'oilOW';
-                    power = 30;
-                    moneyGenerated = 90;
-                    timer = 4;
-                    install = 2000;
-                    repair = 4;
-                    pollution = 20;
-                    oilCost = oilCost;
+                    power = oilPower;
+                    moneyGenerated = oilIncome;
+                    timer = oilTimer;
+                    repair = oilRepair;
+                    pollution = 7;
+                    buyCost = oilCost;
                     break;
                 case 'hydro':
                     spriteKey = 'hydroOW';
-                    power = 30;
-                    moneyGenerated = 90;
-                    timer = 4;
-                    install = 2000;
-                    repair = 4;
+                    power = hydroPower;
+                    moneyGenerated = hydroIncome;
+                    timer = hydroTimer;
+                    repair = hydroRepair;
                     pollution = 0;
                     buyCost = hydroCost;
                     break;
                 case 'nuclear':
                     spriteKey = 'nuclearOW';
-                    power = 100;
-                    moneyGenerated = 90;
-                    timer = 4;
-                    install = 2000;
-                    repair = 4;
+                    power = nuclearPower;
+                    moneyGenerated = nuclearIncome;
+                    timer = nuclearTimer;
+                    repair = nuclearRepair;
                     pollution = 0;
                     buyCost = nuclearCost;
                     break;
@@ -174,7 +150,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
             {
 
                 tile.name = key;
-                buildingTemp = new Building(game, spriteKey, tile.x, tile.y, power, moneyGenerated, timer, install, repair, pollution, index, bonus);
+                buildingTemp = new Building(game, spriteKey, tile.x, tile.y, power, moneyGenerated, timer, buyCost, repair, pollution, index, bonus);
                 tile.building = buildingTemp;
                 buildingTimer(tile.building);
                 sfxPlay('sfxBuild', 1);
@@ -196,6 +172,7 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
             totalIncome[index] = 0;
             power[index] = 0;
             totalPollution[index] = 0;
+            money = money + (building.install/4);
 
             game.time.events.remove(tile.building.initialTimer);
             game.time.events.remove(tile.building.repairTimer);

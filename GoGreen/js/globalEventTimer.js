@@ -24,7 +24,8 @@ function globalEvents() {
     
     if (pollution > 0)
     {
-        residualPollution += pollution * .0001;
+        //residualPollution += pollution * .0001;
+        pollution -= .0003;
     }
     else if (residualPollution > 0)
     {
@@ -40,9 +41,9 @@ function globalEvents() {
 function buildingTimer(building)
 {
  building.signal.frame = 0;
- building.repairTimer = game.time.events.add(Phaser.Timer.SECOND * 10, repairSwitch, this, building);
- building.warningTimer = game.time.events.add(Phaser.Timer.SECOND * 18, warningSwitch, this, building);
- building.initialTimer = game.time.events.add(Phaser.Timer.SECOND * 20, decay, this, building);
+ building.repairTimer = game.time.events.add(Phaser.Timer.SECOND * (building.timer * .6), repairSwitch, this, building);
+ building.warningTimer = game.time.events.add(Phaser.Timer.SECOND * (building.timer * .75), warningSwitch, this, building);
+ building.initialTimer = game.time.events.add(Phaser.Timer.SECOND * (building.timer), decay, this, building);
 
  //console.log(building.initialTimer);
 }
@@ -51,7 +52,7 @@ function pollutionTimer(building)
 {
   var index = building.index;	
   var temp = game.time.events.add(Phaser.Timer.SECOND * 60, removePollution, this, index);
-  //console.log(temp);
+  console.log(temp);
 }
 
 function removePollution(index)
