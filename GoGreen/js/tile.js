@@ -6,6 +6,8 @@
 var isSelected = false;
 var selectedButton;
 var selectedHighlight;
+var selectedTileIndex = -1;
+var selectedTerrainKey = '';
 
 //game, key of the tile, xposition, yposition, occupied, key of the building, reference to building, index of the tile
 function Tile (game, key, xPos, yPos, name, building, tileIndex)
@@ -97,6 +99,8 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
                 selectedButton = this.button;
                 selectedHighlight = this.selectSprite;
                 selectedHighlight.scale.setTo(.5);
+                selectedTileIndex = tileIndex;
+                selectedTerrainKey = key;
                 isSelected = true;
             }
         }
@@ -108,6 +112,8 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
                 selectedButton = this.button;
                 selectedHighlight = this.selectSprite;
                 selectedHighlight.scale.setTo(.5);
+                selectedTileIndex = tileIndex;
+                selectedTerrainKey = key;
                 isSelected = true;
                 //isSelected = false;
             }

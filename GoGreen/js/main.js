@@ -437,7 +437,7 @@ gameStates.Play.prototype = {
         for(var i = 0; i < gridMaxSize; i++)
         {
             voltage += power[i];
-            pollution += totalPollution[i];
+            pollution += totalPollution[i]*1000;
         }
         voltageText = Math.round(voltage / voltageWinCondition * 100);
         powerText.text = voltageText + '%';
@@ -582,7 +582,9 @@ gameStates.GameOver.prototype = {
 	create: function(){
 		console.log('GameOver: create');
         bgmStop();
-        //this.camera.flash('#000000', 1000);
+        this.camera.flash('#000000', 1000);
+        finishedFlash = false;
+        this.camera.onFlashComplete.add(finishFlash,this);
         bgSky = game.add.sprite(0, 0, 'skyLose');
         switch(deathCause){
             case 'co2':
@@ -596,17 +598,22 @@ gameStates.GameOver.prototype = {
                 break;
          }
         
-            restartMouse = game.add.sprite(200, 600, 'restartMouse');
-            restartMouse.animations.add('select', [0,1,0,1], 2, true);
-            restartMouse.animations.add('started', [2], 8, true);
-            restartMouse.animations.play('select');
-            started = false;
-            playedSFX = false;
+        restartMouse = game.add.sprite(200, 600, 'restartMouse');
+        restartMouse.animations.add('select', [0,1,0,1], 2, true);
+        restartMouse.animations.add('started', [2], 8, true);
+        restartMouse.animations.play('select');
+        started = false;
+        playedSFX = false;
         
+        function finishFlash() {
+            finishedFlash = true;
+        }
 	},
 	update: function(){
-
-        game.input.onDown.add(openTheGame, this);
+        
+        if (finishedFlash){
+            game.input.onDown.add(openTheGame, this);
+        }
         
         if (started){
             bgmStop();
@@ -642,6 +649,8 @@ gameStates.Win.prototype = {
 		console.log('Win: create');
         bgmStop();
         this.camera.flash('#000000', 1000);
+        finishedFlash = false;
+        this.camera.onFlashComplete.add(finishFlash,this);
         bgSky = game.add.sprite(0, 0, 'skyWin');
         bgSky.animations.add('twinkle', [0,1,0,1], 5, true);
         bgSky.animations.play('twinkle');
@@ -661,11 +670,16 @@ gameStates.Win.prototype = {
         started = false;
         playedSFX = false;
         
+        function finishFlash() {
+            finishedFlash = true;
+        }
 	},
 	update: function(){
         starWin.angle += 1;
         
-        game.input.onDown.add(openTheGame, this);
+        if (finishedFlash){
+            game.input.onDown.add(openTheGame, this);
+        }
         
         if (started){
             bgmStop();
