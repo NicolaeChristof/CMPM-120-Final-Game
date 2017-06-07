@@ -68,6 +68,7 @@ function Research(game, key, xPos, yPos, icon)
     
     function actionOnClick()
     {
+        if(paused || pausedEvent) return; // don't do anything when paused
     	 switch(key) {
                 case 'researchCoal':
                     research('coal');

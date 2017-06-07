@@ -82,6 +82,8 @@ var nuclearIncome = 75;
 var repair;
 
 var buildingPlaced;
+var tutorialEnabled = false;
+var tutorialProgress = 0;
 
 var bgmPlaying;
 
@@ -199,8 +201,27 @@ gameStates.MainMenu.prototype = {
         }
         
         function letUsStartTheGame() {
-            game.time.events.add(Phaser.Timer.SECOND, function() { game.state.start('Game')});
+            game.time.events.add(Phaser.Timer.SECOND, function() { game.state.start('AskTutorial')});
         }
+    }
+}
+
+//------------------------------------------------------------------//
+// State: AskTutorial
+// - Screen that asks if you want tutorials enabled
+//------------------------------------------------------------------//
+
+// define AskTutorial state and method
+gameStates.AskTutorial = function(game){};
+gameStates.AskTutorial.prototype = {
+    create: function(){
+        //bgSky = game.add.tileSprite(0 , 0, gameScreenProperties.width, gameScreenProperties.height, 'sky');
+        console.log('AskTutorial: create');
+        tutorialAsk = new eventPopup(game, 'tutorialEnable', 0, 0);
+        eventPopupRunEvent(tutorialAsk);
+    },
+    update: function(){
+        //State Switch found inside eventPopup.js
     }
 }
 
@@ -223,8 +244,8 @@ gameStates.Play.prototype = {
     //====Game: CREATE====//
     
     create: function(){
-        this.camera.flash('#000000', 1000);
-        money = 1500000;
+        this.camera.flash('#000000', 2000);
+        money = 150000;
         death = false;
         win = false;
         buildingPlaced = false;
@@ -329,12 +350,12 @@ gameStates.Play.prototype = {
        
         moneyText = game.add.text(1000, gameScreenProperties.height - 345, money, { fontSize: '32px', fill: '#000', align: 'right' });
         moneyText.anchor.y = .5;
-        revenueText = game.add.text(370, gameScreenProperties.height - 345, '+0v' + money, { fontSize: '24px', fill: '#000' });
+        revenueText = game.add.text(370, gameScreenProperties.height - 345, '+0/s', { fontSize: '24px', fill: '#000' });
         revenueText.anchor.y = .5;
         incomeText = game.add.text(520, 100, '', { fontSize: '32px', fill: '#00FF00' });
-        powerText = game.add.text(570, gameScreenProperties.height - 345, '0' , { fontSize: '24px', fill: '#000' });
+        powerText = game.add.text(570, gameScreenProperties.height - 345, '0%' , { fontSize: '24px', fill: '#000' });
         powerText.anchor.y = .5;
-        pollutionText = game.add.text(770, gameScreenProperties.height - 345, 'AQI' , { fontSize: '24px', fill: '#000' });
+        pollutionText = game.add.text(770, gameScreenProperties.height - 345, '0aqi' , { fontSize: '24px', fill: '#000' });
         pollutionText.anchor.y = .5;
         
         
@@ -347,6 +368,35 @@ gameStates.Play.prototype = {
         hudRepairText = game.add.text(125, 1060, '', {fontSize: '32px', fill: '#000'});
         hudIncomeText= game.add.text(125, 1115, '', {fontSize: '32px', fill: '#000'});
 
+        paused = false;
+        pausedEvent = false;
+        
+        tutorialPopup1 = new eventPopup(game, 'tutorial1', 400, 600);
+        tutorialPopup2 = new eventPopup(game, 'tutorial2', 500, 500);
+        if (tutorialEnabled) {
+            eventPopupRunEvent(tutorialPopup1);
+        }
+        
+        pauseScreen = game.add.sprite(0,0,'pauseScreen');
+        pauseScreen.scale.setTo(0);
+        
+//        pauseButton = game.add.button(100, 700, 'pauseButton', pauseGame, this);
+//        pauseButton.frame = 0;
+//        pauseButton.scale.setTo(.5);
+//        
+//        function pauseGame() {
+//            if(pausedEvent) return;
+//            if(paused){
+//                paused = false;
+//                pauseButton.frame = 0;
+//                pauseScreen.scale.setTo(0);
+//            }
+//            else{
+//                paused = true;
+//                pauseButton.frame = 1;
+//                pauseScreen.scale.setTo(1);
+//            }
+//        }
     },
     
     //====Game: UPDATE====//
@@ -354,7 +404,8 @@ gameStates.Play.prototype = {
     //increases money based off the number of sources
     update: function() {
         
-
+        if(paused || pausedEvent) return; // don't do anything when paused
+        
 	  if(coalExist && coal.button.input.pointerOver())
         {
             tileInfoUI.frame = 1;
@@ -428,7 +479,6 @@ gameStates.Play.prototype = {
             cloudGoUp = .1;
         }
         
-        
         //update money
         moneyText.text = money;
         revenueText.text = '+' + revenue + '/s';
@@ -437,7 +487,7 @@ gameStates.Play.prototype = {
         for(var i = 0; i < gridMaxSize; i++)
         {
             voltage += power[i];
-            pollution += totalPollution[i]*1000;
+            pollution += totalPollution[i]; //*1000;
         }
         voltageText = Math.round(voltage / voltageWinCondition * 100);
         powerText.text = voltageText + '%';
@@ -530,6 +580,13 @@ gameStates.Play.prototype = {
             }
         }
 
+        //====TUTORIAL PROGRESSION====//
+        
+        if(buildingPlaced && tutorialEnabled && tutorialProgress <= 0){
+            eventPopupRunEvent(tutorialPopup2);
+        }
+        
+        //====END TUTORIAL PROGRESSION====//
        
         if(voltage == 0)
         {
@@ -720,6 +777,7 @@ var game = new Phaser.Game(gameScreenProperties.width, gameScreenProperties.heig
 game.state.add('Preloader', gameStates.Preloader);
 game.state.add('Start', gameStates.Start);
 game.state.add('MainMenu', gameStates.MainMenu);
+game.state.add('AskTutorial', gameStates.AskTutorial);
 game.state.add('Game', gameStates.Play);
 game.state.add('GameOver', gameStates.GameOver);
 game.state.add('Win', gameStates.Win);

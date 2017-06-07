@@ -26,12 +26,11 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
     this.button = icon;
     this.button.inputEnabled = true;
     // ToDo: MAKE BUTTON SPRITES FOR UNAVALIABILITY
-    
-    
 
     function pSourceClick()
     {
         console.log("Button Pressed");
+        if(paused || pausedEvent) return; // don't do anything when paused
         
             if(isSelected)
             {
@@ -61,10 +60,6 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
                     }
                 }
             }
-        
-        
-           
-        
         
         function createNewBuilding(key, tile, index){
             var spriteKey = '';
@@ -148,7 +143,6 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
             }
             else
             {
-
                 tile.name = key;
                 buildingTemp = new Building(game, spriteKey, tile.x, tile.y, power, moneyGenerated, timer, buyCost, repair, pollution, index, bonus);
                 tile.building = buildingTemp;
@@ -183,11 +177,6 @@ function PowerSource (game, key, xPos, yPos, index , tile, icon)
             building.kill();
         }
     }
-
-
-
-    
-    
 
     function setFalse(sprite)
     {

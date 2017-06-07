@@ -80,6 +80,15 @@ function loadAllImages() {
     game.load.image('winText', 'assets/images/WinText.png');
     game.load.image('starWin', 'assets/images/StarWin.png');
     game.load.image('groundWin', 'assets/images/GroundWin.png');
+    
+    game.load.image('messageBox', 'assets/images/messageBox.png');
+    game.load.image('pauseScreen', 'assets/images/pauseScreen.png');
+    game.load.image('pauseScreenTextless', 'assets/images/pauseScreenTextless.png');
+    
+    game.load.image('okayButtonLong', 'assets/images/okayButtonLong.png');
+    
+    game.load.image('yesButton', 'assets/images/yesButton.png');
+    game.load.image('noButton', 'assets/images/noButton.png');
 }
 
 //----LOAD SPRITESHEETS----//
@@ -95,6 +104,9 @@ function loadAllSprites() {
     game.load.spritesheet('selector', 'assets/images/selector.png', 200, 200);
 
     game.load.spritesheet('repairStatus', 'assets/images/RepairSignalSheet2.png', 200, 200);
+    game.load.spritesheet('popupBubble', 'assets/images/popup.png', 200, 200);
+    game.load.spritesheet('pauseButton', 'assets/images/pauseButton.png', 200, 200);
+    game.load.spritesheet('boxImage', 'assets/images/boxImages.png', 200, 280);
 }
 
 function loadAllAudio() {

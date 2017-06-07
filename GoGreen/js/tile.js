@@ -91,6 +91,8 @@ function Tile (game, key, xPos, yPos, name, building, tileIndex)
     {
         console.log("Tile Pressed");
         console.log("Tile index: " + tileIndex);
+        
+        if(paused || pausedEvent) return; // don't do anything when paused
       
         if(!isSelected)
         {
